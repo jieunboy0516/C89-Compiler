@@ -9,7 +9,7 @@ The source of the compiler is in the `src/` directory and has been written in C+
 
 # Personnel
 - [HURULD](https://github.com/HURULD)  - Harry Griffiths (hng21)
-- Samsam Lee (scl21)
+- [jieunboy0516](https://github.com/jieunboy0516) - Samsam Lee (scl21)
 
 Acknowledgements
 ================
