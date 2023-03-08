@@ -4,14 +4,14 @@
 // Avoid error "error: `fileno' was not declared in this scope"
 extern "C" int fileno(FILE *stream);
 
-#include "c_parser.tab.hpp"
+#include "lexertest.hpp"
 %}
 
 %%
 
-//C89 Operators
 
-[*]             { return T_TIMES; }
+
+[*]             { return T_TIMES; }//C89 Operators
 [+]             { return T_PLUS; }
 [\^]            { return T_EXPONENT; }
 [-]             { return T_MINUS; }
@@ -32,9 +32,9 @@ extern "C" int fileno(FILE *stream);
 [\=]            { return T_EQUALS;}
 [\#]            { return T_HASH; }
 
-//C89 Punctuators
 
-[(]             { return T_LBRACKET; }
+
+[(]             { return T_LBRACKET; } //C89 Punctuators
 [)]             { return T_RBRACKET; }
 [\[]            { return T_LSQUAREBRACKET; }
 [\]]            { return T_RSQUAREBRACKET; }
@@ -43,9 +43,9 @@ extern "C" int fileno(FILE *stream);
 
 
 
-//C89 keywords 
 
-auto        { return KW_AUTO; }
+
+auto        { return KW_AUTO; }//C89 keywords 
 double      { return KW_DOUBLE; }
 int         { return KW_INT; }
 struct      { return KW_STRUCT; }
@@ -74,18 +74,18 @@ if          { return KW_IF; }
 static      { return KW_STATIC; }
 while       { return KW_WHILE; }
 
-0[0-7]*             { yyval.string=yytext; return T_OCTAL_CONST; }
-0[xX][0-9a-fA-F]+   { yyval.string=yytext; return T_HEX_CONST; }
-[1-9][0-9]*         { yyval.string=yytext; return T_DECIMAL_CONST; }
-L?'[^\'\\\n]+'      { yyval.string=yytext; return T_CHAR_CONST; } //important: Multicharacter constants are valid but are yucky and might cause issues with implementation
-[A-z_][0-9A-z_]*    { yyval.string=yytext; return T_IDENTIFIER; }
+0[0-7]*             { yyval.string=yytext; return T_OCTAL_CONST}
+0[xX][0-9a-fA-F]+   { yyval.string=yytext; return T_HEX_CONST}
+[1-9][0-9]*         { yyval.string=yytext; return T_DECIMAL_CONST}
+L?'[^\'\\\n]+'      { yyval.string=yytext; return T_CHAR_CONST} //important: Multicharacter constants are valid but are yucky and might cause issues with implementation
+
 
 
 [A-z_]   { yyval.string=yytext; return T_NONDIGIT; }
 [eE]     { return T_E; }
-[fF]     { return T_SUFFIX_F; }
-[lL]     { return T_SUFFIX_L; }
-[uU]     { return T_SUFFIX_U; }
+[fF]     { return T_SUFFIX_F}
+[lL]     { return T_SUFFIX_L}
+[uU]     { return T_SUFFIX_U}
 
 
 
@@ -93,6 +93,7 @@ L?'[^\'\\\n]+'      { yyval.string=yytext; return T_CHAR_CONST; } //important: M
 
 .               { fprintf(stderr, "Invalid token\n"); exit(1); }
 %%
+
 
 void yyerror (char const *s)
 {
