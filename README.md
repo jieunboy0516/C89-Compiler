@@ -1,7 +1,10 @@
 # Team042 Compilers Coursework 2023
 The source of the compiler is in the `src/` directory and has been written in C++ using Flex and Bison for the lexing and parsing stage
 
-# Tasks to be completed (very rough):
+
+
+# Time management and schedule: 
+## please visit [our detailed logbook](./time%20management/readme.md)
 - [ ] Lexer to tokenize a single source file
 - [ ] Parser for a single source file
 - [ ] Compiler for a single source file
