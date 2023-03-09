@@ -15,11 +15,18 @@
 // Represents the value associated with any kind of
 // AST node.
 %union{
-  const Expression *expr;
+  char* str;
+  int num;
+  double floatnum;
 
-  Type type;
-  double number;
-  std::string *string;
+  class FuncDef* FuncDefPtr;
+  class StatList* StatListPtr;
+  class Declarator* DecPtr;
+  class Statement* StatPtr;
+  //class Expression* ExpPtr;
+  
+
+  
 }
 
 // C89 Keywords: int, float, if, etc...
@@ -44,7 +51,14 @@
 %left T_TIMES T_DIVIDE
 %right T_EXPONENT
 
-%type <expr> 
+%type <str> TIdentifier
+%type <num> INTEGER_CONST //need it to accept hex dec bin
+//%type <ExpPtr> 
+%type <StatPtr> ExpStat JumpStat Statement CompoundStat IterStat 
+%type <DecPtr> 
+%type <StatListPtr> 
+%type <DecListPtr> 
+%type <FuncDefPtr> FunctionDef
 
 %start ROOT
 
@@ -55,16 +69,17 @@ ROOT : EXPR { g_root = $1; }
 
 // FUNCTIONS
 
-FUNCTION_DEF: DECLARATION STATEMENT
+FUNCTION_DEF: TYPE TIdentifier TOpenBracket TCloseBracket CompoundStat
 
-COMPOUND_STATEMENT:  T_LCURLYBRACKET DECLARATION_LIST STATEMENT T_RBRACKET {}
-          | T_LCURLYBRACKET STATEMENT_LIST T_RBRACKET {return $2}
 
-STATEMENT_LIST: STATEMENT {return }
-          | STATEMENT_LIST STATEMENT
 
-DECLARATION_LIST: DECLARATION
-          | DECLARATION_LIST DECLARATION
+COMPOUND_STATEMENT:  
+              T_LCURLYBRACKET STATEMENT_LIST T_RBRACKET
+
+STATEMENT_LIST: STATEMENT 
+              | STATEMENT_LIST STATEMENT
+
+
 
 STATEMENT: COMPOUND_STATEMENT
          | EXPRESSION T_SEMICOLON
@@ -74,6 +89,22 @@ STATEMENT: COMPOUND_STATEMENT
          | KW_WHILE T_LBRACKET EXPRESSION T_RBRACKET STATEMENT
          | KW_DO STATEMENT KW_WHILE T_LBRACKET EXPRESSION T_RBRACKET T_SEMICOLON
          | KW_FOR T_LBRACKET EXPRESSION T_SEMICOLON EXPRESSION T_SEMICOLON EXPRESSION T_SEMICOLON T_RBRACKET STATEMENT
+         | DECLARATION_LIST
+
+DECLARATION_LIST: DECLARATION
+                | DECLARATION_LIST DECLARATION
+
+DECLARATION : 
+          TYPE TIdentifier TSemicolon 
+        | TYPE TIdentifier TAssign Exp TSemicolon 
+
+TYPE: KW_AUTO 
+      |KW_DOUBLE 
+      |KW_INT 
+      |KW_STRUCT 
+      |KW_LONG 
+      |KW_ENUM 
+      |KW_CHAR
 
 CONSTANT :  FLOATING_CONST
             | INTEGER_CONST

@@ -34,7 +34,11 @@ Example of tokens include:
 also, that hpp file contains the definition of ```TokenValue yylval; ``` so we dont need to define it again in our lexer and main.cpp
 
 
-Then, we understood that the parser is linked to the main.cpp (supposed to be a compiler in our case). So we have to compile the main.cpp to main.o so that we can link main.o and the lexer and parser together (done by the linker)
+Then, we understood that the parser is linked to the ast.hpp so that the parser understands the ast definitions.
+
+
+
+Finally we have to compile the main.cpp to main.o so that we can link main.o and the lexer and parser together (done by the linker)
 
 
 so that we execute the following instruction in order to compile everything:
