@@ -20,10 +20,15 @@ public:
 	StatList() {};
 	void addToList(Statement* stat_in) {}
 
-
-
 };
 
+class ExternalDecList : public Node{
+private:
+	std::list<ExternalDeclaration*> exdeclist;
+public:
+	ExternalDecList() {};
+	void addToList(ExternalDeclaration* external_dec){}
+};
 
 
 #endif
