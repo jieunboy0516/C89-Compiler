@@ -1,4 +1,8 @@
 
+#ifndef __NODE__
+#define __NODE__
+
+
 #include <iomanip> 
 #include <vector>
 #include <memory>
@@ -36,3 +40,7 @@ public:
 		return "#NOT IMPLEMENTED YET\n";
 	}
 };
+
+
+
+#endif

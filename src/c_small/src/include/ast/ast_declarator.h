@@ -1,4 +1,5 @@
-
+#ifndef __DECLARATOR__
+#define __DECLARATOR__
 #include "ast_all.h"
 #include "ast_node.h"
 
@@ -13,3 +14,5 @@ public:
 
 
 };
+
+#endif

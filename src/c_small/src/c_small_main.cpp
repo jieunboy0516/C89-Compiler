@@ -16,7 +16,7 @@ int main()
 {
 
     while(1){
-        TokenType type=(TokenType)yylex();
+        yytokentype type=(yytokentype)yylex();
 
         //std::string word = *yylval.string;
 
