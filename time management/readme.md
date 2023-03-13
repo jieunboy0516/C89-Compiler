@@ -2,13 +2,13 @@
 
 ## Detailed work log
 [Learning how lexer and parser works together](./understandlexerparser.md)
-
+[Making a compiler with simple features](./c_small.md)
 
 <br>
 
 ## Milestones
 
-- [ ] Lexer to tokenize a single source file 
+- [x] Lexer to tokenize a single source file 
 - [ ] Parser for a single source file
 - [ ] Compiler for a single source file
 - [ ] Extend to multiple source files
@@ -22,5 +22,6 @@ Week of 6th March:
 
 
 Week of 13th March:
-- [] Finishing off the Lexer and Parser
+- [x] Finishing off the Parser
+- [] Finishing off the Parser
 - [] Work on the compiler

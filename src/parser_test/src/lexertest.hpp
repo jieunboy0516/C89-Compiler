@@ -27,7 +27,7 @@ union TokenValue{
 // This is a global variable used to move the
 // attribute value from the lexer back to the
 // main program.
-// By convention it is called yylval, as that is
+// By convention it is called yylval, as that is 
 // the name that will be automatically generated
 // by Bison (see next lab).
 extern TokenValue yylval;
