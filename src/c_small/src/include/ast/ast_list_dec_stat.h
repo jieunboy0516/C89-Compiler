@@ -1,3 +1,5 @@
+#ifndef __LISTDECSTAT__
+#define __LISTDECSTAT__
 
 #include "ast_all.h"
 
@@ -21,3 +23,7 @@ public:
 
 
 };
+
+
+
+#endif

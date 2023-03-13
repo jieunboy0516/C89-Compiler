@@ -1,3 +1,8 @@
+
+#ifndef __EXPRESSIONS_
+#define __EXPRESSIONS_
+
+
 #include "ast_all.h"
 #include "ast_node.h"
 
@@ -41,3 +46,7 @@ public:
 
 
 };
+
+
+
+#endif

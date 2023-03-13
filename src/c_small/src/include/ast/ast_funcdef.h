@@ -1,6 +1,12 @@
+
+#ifndef __FUNCDEF__
+#define __FUNCDEF__
+
+
 #include "ast_all.h"
 #include "ast_param.h"
 #include "ast_statement.h"
+#include "ast_statement_comound.h"
 
 class FuncDef : public Node {
 private:
@@ -9,8 +15,12 @@ private:
 	CompoundStatement* cs;
 public:
 	FuncDef(std::string returnType_in, std::string name_in, CompoundStatement* cs_in) :
-	returnType(returnType_in), name(name_in), param1(param1_in), param2(param2_in), cs(cs_in)
+	returnType(returnType_in), name(name_in), cs(cs_in)
 	{};
 
 
 };
+
+
+
+#endif
