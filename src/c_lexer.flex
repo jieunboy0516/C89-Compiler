@@ -21,7 +21,6 @@ extern "C" int fileno(FILE *stream);
 [\!]            { return T_EXCLAIM; }
 [\?]            { return T_QUESTION; }
 [\,]            { return T_COMMA; }
-[\;]            { return T_SEMICOLON; }
 [\<]            { return T_LESSTHAN; }
 [\>]            { return T_GREATERTHAN; }
 [\&]            { return T_AND; }
@@ -40,6 +39,7 @@ extern "C" int fileno(FILE *stream);
 [\]]            { return T_RSQUAREBRACKET; }
 [\{]            { return T_LCURLYBRACKET;  }
 [\}]            { return T_RCURLYBRACKET;  }
+[\;]            { return T_SEMICOLON; }
 
 
 
