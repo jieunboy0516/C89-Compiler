@@ -25,6 +25,7 @@
   class Statement* StatPtr;
   class Expression* ExpPtr;
   class DecList* DecListPtr;
+  class ExternalDecList* ExternalDecListPtr;
   
 }
 %type <FuncDefPtr> TOPLEVEL
@@ -62,11 +63,11 @@
 
 %%
 
-ROOT: TOPLEVEL { g_root = new ListDecStat($1);}
+ROOT: TOPLEVEL { g_root = new ExternalDecList($1);}
     ;
 
 TOPLEVEL: FUNCTION_DEF {$$ = $1;}
-        | TOPLEVEL FUNCTION_DEF {$$ = listDecStat($1, $2);}
+        | TOPLEVEL FUNCTION_DEF {$$ = ExternalDecList($1, $2);}
         ;
 
 FUNCTION_DEF: TYPE T_IDENTIFIER T_LBRACKET T_RBRACKET COMPOUND_STATEMENT {$$ = new FuncDef($1, $2, $5);}
