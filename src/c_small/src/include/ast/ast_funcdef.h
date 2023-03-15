@@ -14,10 +14,28 @@ private:
 	std::string name;
 	CompoundStatement* cs;
 public:
-	FuncDef(std::string returnType_in, std::string name_in, CompoundStatement* cs_in) :
+	FuncDef(std::string& returnType_in, std::string& name_in, CompoundStatement* cs_in) :
 	returnType(returnType_in), name(name_in), cs(cs_in)
 	{};
 
+
+	std::string print() override{
+		std::stringstream ss;
+
+		return ss.str();
+	}
+
+	std::string cprint() override{
+		std::stringstream ss;
+
+		return ss.str();
+	}
+
+	std::string codeprint(Context& cont) override{
+		std::stringstream ss;
+
+		return ss.str();
+	}
 
 };
 

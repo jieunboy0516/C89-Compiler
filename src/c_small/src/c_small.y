@@ -17,7 +17,7 @@
 // Represents the value associated with any kind of
 // AST node.
 %union{
-  char* str;
+  std::string* str;
   int num;
   double floatnum;
 
@@ -28,11 +28,13 @@
   class Expression* ExpPtr;
   class DecList* DecListPtr;
   class ExternalDecList* ExternalDecListPtr;
-  
+  class CompoundStatement* CompoundStatPtr;
+   
 }
 %type <FuncDefPtr> TOPLEVEL
 %type <FuncDefPtr> FUNCTION_DEF
-%type <StatPtr> STATEMENT COMPOUND_STATEMENT
+%type <StatPtr> STATEMENT
+%type <CompoundStatPtr> COMPOUND_STATEMENT
 %type <StatListPtr> STATEMENT_LIST 
 %type <StatPtr> KW_RETURN
 %type <StatPtr> JUMP_STATEMENT
@@ -65,33 +67,40 @@
 
 %%
 
-ROOT: TOPLEVEL { g_root = new ExternalDecList({$1});}
+ROOT: TOPLEVEL { g_root = $1;}
     ;
 
 TOPLEVEL: FUNCTION_DEF {$$ = $1;}
-        | TOPLEVEL FUNCTION_DEF {$$ = ExternalDecList({$1, $2});}
+        | TOPLEVEL FUNCTION_DEF {$$ = $2;}
         ;
 
-FUNCTION_DEF: TYPE T_IDENTIFIER T_LBRACKET T_RBRACKET COMPOUND_STATEMENT {$$ = new FuncDef($1, $2, $5);}
+FUNCTION_DEF: TYPE T_IDENTIFIER T_LBRACKET T_RBRACKET COMPOUND_STATEMENT {$$ = new FuncDef(*$1, *$2, $5);}
             ;
 
-COMPOUND_STATEMENT: T_LCURLYBRACKET STATEMENT_LIST T_RCURLYBRACKET {$$ = $2;}
+COMPOUND_STATEMENT: T_LCURLYBRACKET STATEMENT_LIST T_RCURLYBRACKET {$$ = new CompoundStatement(0,$2);}
                   ;
 
-STATEMENT_LIST: STATEMENT {$$ = new StatList({$1});}
-              | STATEMENT_LIST STATEMENT  {$$ = new StatList({$1, $2});}
+STATEMENT_LIST: STATEMENT {$$ = new StatList();
+                           $$->addToList($1);
+                          }
+              | STATEMENT_LIST STATEMENT  {$1->addToList($2);
+                           $$ = $1;}
               ;
 
 STATEMENT: JUMP_STATEMENT {$$ = $1;}
         ;
 
-JUMP_STATEMENT: KW_RETURN EXPRESSION T_SEMICOLON {$$ = new Statement($1, $2)}
+JUMP_STATEMENT: KW_RETURN EXPRESSION T_SEMICOLON {$$ = new JumpStatement(*yylval.str, $2);
+
+
+
+                                                  }
               ;
 
 EXPRESSION: CONSTANT {$$ = $1;}
           ;
 
-CONSTANT: T_DECIMAL_CONST {$$ = new ConstantValue(std::stoi(yyval.string));}
+CONSTANT: T_DECIMAL_CONST {$$ = new ConstantValue(std::stoi(*yylval.str));}
         /* | T_OCTAL_CONST {} 
         | T_HEX_CONST  {}
         | T_CHAR_CONST {} */
@@ -99,7 +108,7 @@ CONSTANT: T_DECIMAL_CONST {$$ = new ConstantValue(std::stoi(yyval.string));}
 
 
 
-TYPE: KW_INT {return std::string("int"); }
+TYPE: KW_INT {return 0; }
     ;
 %%
 

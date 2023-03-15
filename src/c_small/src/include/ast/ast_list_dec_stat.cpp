@@ -41,38 +41,38 @@ StatList::addToList(Statement* stat_in) {
 		return;
 	}
 
-StatList::print() {
-		std::stringstream ss;
-		//ss << "STAT_LIST {" << "\n";
-		for (std::list<Statement*>::iterator it=slist.begin(); it!=slist.end(); ++it) {
-    		if((*it)!=NULL) {
-    			ss << ((*it)->print()) << "\n\n";   			
-    		}		
-		} 
-		//ss << "}" << "\n";
-		return ss.str();
-	}
 
-StatList::cprint() {
-		std::stringstream ss;
-		for (std::list<Statement*>::iterator it=slist.begin(); it!=slist.end(); ++it) {
-    		if((*it)!=NULL) {
-    			ss << ((*it)->cprint());   			
-    		}
+ExternalDecList::print() {
+	std::stringstream ss;
+	//ss << "DEC_LIST {" << "\n";
+	for (std::list<Declarator*>::iterator it=dlist.begin(); it!=dlist.end(); ++it) {
+		if((*it)!=NULL) {
+			ss << ((*it)->print()) << "\n\n";   			
+		}		
+	} 
+	//ss << "}" << "\n";
+	return ss.str();
+}
+
+ExternalDecList::cprint() {
+	std::stringstream ss;
+	for (std::list<Declarator*>::iterator it=dlist.begin(); it!=dlist.end(); ++it) {
+		if((*it)!=NULL) {
+			ss << ((*it)->cprint());   			
 		}
-		return ss.str();
 	}
-	
-StatList::codeprint(Context& cont) {
-		std::stringstream ss;
-		for (std::list<Statement*>::iterator it=slist.begin(); it!=slist.end(); ++it) {
-    		if((*it)!=NULL) {
-    			//std::cerr << "STAT2" << std::endl;
-				ss << ((*it)->codeprint(cont)); 
-    		}
+	return ss.str();
+}
+ExternalDecList::codeprint(Context& cont) {
+	std::stringstream ss;
+	for (std::list<Declarator*>::iterator it=dlist.begin(); it!=dlist.end(); ++it) {
+		if((*it)!=NULL) {
+			ss << ((*it)->codeprint(cont));   			
 		}
-		return ss.str();
 	}
+	return ss.str();
+}
+
 
 ExternalDecList::addToList(ExternalDeclaration* extDec_in){
 	exdeclist.push_back(extDec_in);

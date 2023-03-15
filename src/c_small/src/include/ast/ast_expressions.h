@@ -18,6 +18,24 @@ public:
 	{};
 
 
+	std::string print() override{
+		std::stringstream ss;
+
+		return ss.str();
+	}
+
+	std::string cprint() override{
+		std::stringstream ss;
+
+		return ss.str();
+	}
+
+	std::string codeprint(Context& cont) override{
+		std::stringstream ss;
+
+		return ss.str();
+	}
+
 };
 
 class Identifier : public Expression {

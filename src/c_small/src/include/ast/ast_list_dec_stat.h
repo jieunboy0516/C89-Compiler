@@ -13,9 +13,9 @@ class DecList : public Node {
 private:
 	std::list<Declarator*> dlist;
 public:
-	DecList(std::initializer_list<Declarator*> list) : dlist(list) {}
+	DecList(){};
 	void addToList(Declarator* dec_in) {
-	}
+	};
 
 };
 
@@ -23,8 +23,26 @@ class StatList : public Node {
 private:
 	std::list<Statement*> slist;
 public:
-	StatList(std::initializer_list<Statement*> list) : slist(list) {}
-	void addToList(Statement* stat_in) {}
+	StatList() {};
+	void addToList(Statement* stat_in) {};
+
+	std::string print() override{
+		std::stringstream ss;
+
+		return ss.str();
+	}
+
+	std::string cprint() override{
+		std::stringstream ss;
+
+		return ss.str();
+	}
+
+	std::string codeprint(Context& cont) override{
+		std::stringstream ss;
+
+		return ss.str();
+	}
 
 };
 
@@ -36,5 +54,6 @@ public:
 	
 	void addToList(ExternalDeclaration* external_dec){}
 };
+
 
 #endif
