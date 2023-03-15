@@ -36,10 +36,7 @@ DecList::codeprint(Context& cont) {
 	return ss.str();
 }
 
-StatList::addToList(Statement* stat_in) {
-		dlist.push_back(stat_in);
-		return;
-	}
+
 
 
 ExternalDecList::print() {

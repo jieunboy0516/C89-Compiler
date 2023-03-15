@@ -558,8 +558,8 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    70,    70,    73,    74,    77,    80,    83,    86,    90,
-      93,   100,   103,   111
+       0,    70,    70,    73,    74,    77,    80,    86,    90,    96,
+      99,   106,   109,   116
 };
 #endif
 
@@ -1390,61 +1390,64 @@ yyreduce:
 
   case 6:
 #line 80 "src/c_small.y"
-                                                                   {(yyval.CompoundStatPtr) = new CompoundStatement(0,(yyvsp[-1].StatListPtr));}
+                                                                   {(yyval.CompoundStatPtr) = new CompoundStatement(0,(yyvsp[-1].StatListPtr));  }
 #line 1395 "bin/c_small.tab.cpp"
     break;
 
   case 7:
-#line 83 "src/c_small.y"
+#line 86 "src/c_small.y"
                           {(yyval.StatListPtr) = new StatList();
                            (yyval.StatListPtr)->addToList((yyvsp[0].StatPtr));
+                                    std::cout << "start" << std::endl; Context test = Context(); std::cout << (yyval.StatListPtr)->codeprint(test) << std::endl;; std::cout << "done" << std::endl; 
                           }
-#line 1403 "bin/c_small.tab.cpp"
+#line 1404 "bin/c_small.tab.cpp"
     break;
 
   case 8:
-#line 86 "src/c_small.y"
+#line 90 "src/c_small.y"
                                           {(yyvsp[-1].StatListPtr)->addToList((yyvsp[0].StatPtr));
-                           (yyval.StatListPtr) = (yyvsp[-1].StatListPtr);}
-#line 1410 "bin/c_small.tab.cpp"
+                           (yyval.StatListPtr) = (yyvsp[-1].StatListPtr);
+                                    std::cout << "start" << std::endl; Context test = Context(); std::cout << (yyval.StatListPtr)->codeprint(test) << std::endl;; std::cout << "done" << std::endl;  
+                           }
+#line 1413 "bin/c_small.tab.cpp"
     break;
 
   case 9:
-#line 90 "src/c_small.y"
-                          {(yyval.StatPtr) = (yyvsp[0].StatPtr);}
-#line 1416 "bin/c_small.tab.cpp"
+#line 96 "src/c_small.y"
+                          {(yyval.StatPtr) = (yyvsp[0].StatPtr); }
+#line 1419 "bin/c_small.tab.cpp"
     break;
 
   case 10:
-#line 93 "src/c_small.y"
+#line 99 "src/c_small.y"
                                                  {(yyval.StatPtr) = new JumpStatement(*yylval.str, (yyvsp[-1].ExpPtr));
+                                                  std::cout << "STATEMENT LOL" <<std::endl;
 
-
-
+ 
                                                   }
-#line 1426 "bin/c_small.tab.cpp"
+#line 1429 "bin/c_small.tab.cpp"
     break;
 
   case 11:
-#line 100 "src/c_small.y"
+#line 106 "src/c_small.y"
                      {(yyval.ExpPtr) = (yyvsp[0].ExpPtr);}
-#line 1432 "bin/c_small.tab.cpp"
+#line 1435 "bin/c_small.tab.cpp"
     break;
 
   case 12:
-#line 103 "src/c_small.y"
+#line 109 "src/c_small.y"
                           {(yyval.ExpPtr) = new ConstantValue(std::stoi(*yylval.str));}
-#line 1438 "bin/c_small.tab.cpp"
+#line 1441 "bin/c_small.tab.cpp"
     break;
 
   case 13:
-#line 111 "src/c_small.y"
-             {return 0; }
-#line 1444 "bin/c_small.tab.cpp"
+#line 116 "src/c_small.y"
+             {(yyval.str) = yylval.str;}
+#line 1447 "bin/c_small.tab.cpp"
     break;
 
 
-#line 1448 "bin/c_small.tab.cpp"
+#line 1451 "bin/c_small.tab.cpp"
 
       default: break;
     }
@@ -1676,7 +1679,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 113 "src/c_small.y"
+#line 119 "src/c_small.y"
 
 
 Node *g_root;
@@ -1688,7 +1691,20 @@ Node *parseAST(std::string filename)
     std::cerr << "Couldn't open input file: " << filename << std::endl;
     exit(1);
   }
+
+  // std::ifstream fs;
+  // fs.open(filename.c_str());
+  // std::string line ;
+  // while(fs >> line)
+  // {
+  //   std::cout << line << std::endl;
+  // }
+
   g_root = NULL;
-  yyparse();
+  std::cout << yyparse() << std::endl;
+  //std::cout << (int)(g_root == 0)<< std::endl;
   return g_root;
 }
+
+
+

@@ -77,23 +77,29 @@ TOPLEVEL: FUNCTION_DEF {$$ = $1;}
 FUNCTION_DEF: TYPE T_IDENTIFIER T_LBRACKET T_RBRACKET COMPOUND_STATEMENT {$$ = new FuncDef(*$1, *$2, $5);}
             ;
 
-COMPOUND_STATEMENT: T_LCURLYBRACKET STATEMENT_LIST T_RCURLYBRACKET {$$ = new CompoundStatement(0,$2);}
+COMPOUND_STATEMENT: T_LCURLYBRACKET STATEMENT_LIST T_RCURLYBRACKET {$$ = new CompoundStatement(0,$2);  }
                   ;
+
+//printf("Address of x is %p\n", (void *)$2); 
+//std::cout << "start" << std::endl; Context test = Context(); $$->codeprint(test); std::cout << "done" << std::endl;
 
 STATEMENT_LIST: STATEMENT {$$ = new StatList();
                            $$->addToList($1);
+                                    std::cout << "start" << std::endl; Context test = Context(); std::cout << $$->codeprint(test) << std::endl;; std::cout << "done" << std::endl; 
                           }
               | STATEMENT_LIST STATEMENT  {$1->addToList($2);
-                           $$ = $1;}
+                           $$ = $1;
+                                    std::cout << "start" << std::endl; Context test = Context(); std::cout << $$->codeprint(test) << std::endl;; std::cout << "done" << std::endl;  
+                           }
               ;
 
-STATEMENT: JUMP_STATEMENT {$$ = $1;}
+STATEMENT: JUMP_STATEMENT {$$ = $1; }
         ;
 
 JUMP_STATEMENT: KW_RETURN EXPRESSION T_SEMICOLON {$$ = new JumpStatement(*yylval.str, $2);
+                                                  std::cout << "STATEMENT LOL" <<std::endl;
 
-
-
+ 
                                                   }
               ;
 
@@ -107,9 +113,9 @@ CONSTANT: T_DECIMAL_CONST {$$ = new ConstantValue(std::stoi(*yylval.str));}
         ;
 
 
+TYPE: KW_INT {$$ = yylval.str;}
+    ;  
 
-TYPE: KW_INT {return 0; }
-    ;
 %%
 
 Node *g_root;
@@ -121,7 +127,20 @@ Node *parseAST(std::string filename)
     std::cerr << "Couldn't open input file: " << filename << std::endl;
     exit(1);
   }
+
+  // std::ifstream fs;
+  // fs.open(filename.c_str());
+  // std::string line ;
+  // while(fs >> line)
+  // {
+  //   std::cout << line << std::endl;
+  // }
+
   g_root = NULL;
-  yyparse();
+  std::cout << yyparse() << std::endl;
+  //std::cout << (int)(g_root == 0)<< std::endl;
   return g_root;
 }
+
+
+

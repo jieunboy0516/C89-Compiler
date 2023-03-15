@@ -8,6 +8,7 @@ class ExternalDeclaration;
 #include "ast_statement.h"
 #include "ast_all.h"
 #include <initializer_list>
+#include <iostream>
 
 class DecList : public Node {
 private:
@@ -24,7 +25,6 @@ private:
 	std::list<Statement*> slist;
 public:
 	StatList() {};
-	void addToList(Statement* stat_in) {};
 
 	std::string print() override{
 		std::stringstream ss;
@@ -40,8 +40,18 @@ public:
 
 	std::string codeprint(Context& cont) override{
 		std::stringstream ss;
-
+		for (std::list<Statement*>::iterator it=slist.begin(); it!=slist.end(); ++it) {
+    		if((*it)!=NULL) {
+    			//std::cerr << "STAT2" << std::endl;
+				ss << ((*it)->codeprint(cont)); 
+    		}
+		}
 		return ss.str();
+	}
+
+	void addToList(Statement* stat_in) {
+		slist.push_back(stat_in);
+		return;
 	}
 
 };

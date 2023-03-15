@@ -15,26 +15,30 @@
 int main()
 {
 
-    while(1){
-        yytokentype type=(yytokentype)yylex();
+    // while(1){
+    //     yytokentype type=(yytokentype)yylex();
 
-        //std::string word = *yylval.string;
+    //     //std::string word = *yylval.string;
 
-        std::cout << type << std::endl;
-        //delete yylval.string;
+    //     std::cout << type << std::endl;
+    //     //delete yylval.string;
 
-        // Parse the AST
+    //     // Parse the AST
         
         
-        // evaluate it with the bindings given
+    //     // evaluate it with the bindings given
         
-        std::cout<<std::endl;
+    //     std::cout<<std::endl;
 
       
-    }
+    // }
 
-    // const Expression *ast=parseAST();
-    // ast->print(std::cout);
-
+    Node *ast=parseAST("mycode.txt");
+    Context cont = Context();
+    std::cout<<"=====CODE GENERATION====="<<std::endl;
+    std::cout<< ast->codeprint(cont) << std::endl;
+    //ast->codeprint(cont);
+    //printf("Address of x is %p\n", (void *)ast);  
+ 
     return 0;
 }

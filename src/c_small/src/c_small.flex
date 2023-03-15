@@ -12,18 +12,18 @@ extern "C" int fileno(FILE *stream);
 
 
 
-int         { std::string* strptr = new std::string(yytext);
-              yylval.str=strptr; return KW_INT; }
-return      { return KW_RETURN; }
+int         { std::string* strptr = new std::string(yytext); 
+              yylval.str=strptr; std::cout<<yytext<<std::endl;return KW_INT; }
+return      { std::cout<<yytext<<std::endl; return KW_RETURN; }
 
 
-[(]             { return T_LBRACKET; }
-[)]             { return T_RBRACKET; }
-[\[]            { return T_LSQUAREBRACKET; }
-[\]]            { return T_RSQUAREBRACKET; }
-[\{]            { return T_LCURLYBRACKET;  }
-[\}]            { return T_RCURLYBRACKET;  }
-[\;]            { return T_SEMICOLON; }
+[\(]             {std::cout<<yytext<<std::endl; return T_LBRACKET; }
+[\)]             { std::cout<<yytext<<std::endl;return T_RBRACKET; }
+[\[]            {std::cout<<yytext<<std::endl; return T_LSQUAREBRACKET; }
+[\]]            { std::cout<<yytext<<std::endl;return T_RSQUAREBRACKET; }
+[\{]            { std::cout<<yytext<<std::endl;return T_LCURLYBRACKET;  }
+[\}]            {std::cout<<yytext<<std::endl; return T_RCURLYBRACKET;  }
+[\;]            { std::cout<<yytext<<std::endl;return T_SEMICOLON; }
 
 
 0[0-7]*             { std::string* strptr = new std::string(yytext);
@@ -33,11 +33,10 @@ return      { return KW_RETURN; }
 [1-9][0-9]*         { std::string* strptr = new std::string(yytext);
                       yylval.str=strptr; return T_DECIMAL_CONST; }
 L?'[^\'\\\n]+'      { std::string* strptr = new std::string(yytext);
-                      yylval.str=strptr; return T_CHAR_CONST; }
-[A-z_][0-9A-z_]*    { std::string* strptr = new std::string(yytext);
-                      yylval.str=strptr; return T_IDENTIFIER; }
+                      yylval.str=strptr;  return T_CHAR_CONST; }
+[A-z_][0-9A-z_]*    { std::string* strptr = new std::string(yytext);  return T_IDENTIFIER; }
 
-[ \t\r\n]+		{;}
+[ \t\r\n]+		{std::cout<<yytext<<std::endl;}
 
 .               { fprintf(stderr, "Invalid token\n"); exit(1); }
 %%

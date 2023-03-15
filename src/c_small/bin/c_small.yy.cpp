@@ -757,48 +757,48 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 15 "src/c_small.flex"
-{ std::string* strptr = new std::string(yytext);
-              yylval.str=strptr; return KW_INT; }
+{ std::string* strptr = new std::string(yytext); 
+              yylval.str=strptr; std::cout<<yytext<<std::endl;return KW_INT; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 17 "src/c_small.flex"
-{ return KW_RETURN; }
+{ std::cout<<yytext<<std::endl; return KW_RETURN; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 20 "src/c_small.flex"
-{ return T_LBRACKET; }
+{std::cout<<yytext<<std::endl; return T_LBRACKET; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 21 "src/c_small.flex"
-{ return T_RBRACKET; }
+{ std::cout<<yytext<<std::endl;return T_RBRACKET; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 22 "src/c_small.flex"
-{ return T_LSQUAREBRACKET; }
+{std::cout<<yytext<<std::endl; return T_LSQUAREBRACKET; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 23 "src/c_small.flex"
-{ return T_RSQUAREBRACKET; }
+{ std::cout<<yytext<<std::endl;return T_RSQUAREBRACKET; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 24 "src/c_small.flex"
-{ return T_LCURLYBRACKET;  }
+{ std::cout<<yytext<<std::endl;return T_LCURLYBRACKET;  }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 25 "src/c_small.flex"
-{ return T_RCURLYBRACKET;  }
+{std::cout<<yytext<<std::endl; return T_RCURLYBRACKET;  }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 26 "src/c_small.flex"
-{ return T_SEMICOLON; }
+{ std::cout<<yytext<<std::endl;return T_SEMICOLON; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
@@ -822,31 +822,30 @@ case 13:
 YY_RULE_SETUP
 #line 35 "src/c_small.flex"
 { std::string* strptr = new std::string(yytext);
-                      yylval.str=strptr; return T_CHAR_CONST; }
+                      yylval.str=strptr;  return T_CHAR_CONST; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 37 "src/c_small.flex"
-{ std::string* strptr = new std::string(yytext);
-                      yylval.str=strptr; return T_IDENTIFIER; }
+{ std::string* strptr = new std::string(yytext);  return T_IDENTIFIER; }
 	YY_BREAK
 case 15:
 /* rule 15 can match eol */
 YY_RULE_SETUP
-#line 40 "src/c_small.flex"
-{;}
+#line 39 "src/c_small.flex"
+{std::cout<<yytext<<std::endl;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 42 "src/c_small.flex"
+#line 41 "src/c_small.flex"
 { fprintf(stderr, "Invalid token\n"); exit(1); }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 43 "src/c_small.flex"
+#line 42 "src/c_small.flex"
 ECHO;
 	YY_BREAK
-#line 850 "bin/c_small.yy.cpp"
+#line 849 "bin/c_small.yy.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1851,7 +1850,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 43 "src/c_small.flex"
+#line 42 "src/c_small.flex"
 
 
 void yyerror (char const *s)

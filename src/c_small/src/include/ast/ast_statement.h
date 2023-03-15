@@ -22,7 +22,8 @@ public:
 
 	std::string codeprint(Context& cont) override{
 		std::stringstream ss;
-
+        ss << "jumping to: \n";
+        ss << e->codeprint(cont);
 		return ss.str();
 	}
 

@@ -18,7 +18,6 @@ public:
 	returnType(returnType_in), name(name_in), cs(cs_in)
 	{};
 
-
 	std::string print() override{
 		std::stringstream ss;
 
@@ -33,7 +32,8 @@ public:
 
 	std::string codeprint(Context& cont) override{
 		std::stringstream ss;
-
+		ss << "start of function and return type" << name << " " << returnType << "\n";
+		ss << cs->codeprint(cont);
 		return ss.str();
 	}
 

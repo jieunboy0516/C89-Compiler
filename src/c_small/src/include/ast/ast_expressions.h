@@ -32,10 +32,10 @@ public:
 
 	std::string codeprint(Context& cont) override{
 		std::stringstream ss;
-
+		ss << "using constant value " << value<< "\n";
 		return ss.str();
 	}
-
+	
 };
 
 class Identifier : public Expression {
@@ -46,7 +46,12 @@ public:
 	name(name_in)
 	{};
 
-
+	std::string codeprint(Context& cont) override{
+		std::stringstream ss;
+		ss << "using identifer " << name << "\n";
+		return ss.str();
+	}
+	
 };
 
 

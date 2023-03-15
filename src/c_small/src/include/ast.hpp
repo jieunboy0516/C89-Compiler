@@ -4,6 +4,6 @@
 #include "ast/ast_all.h"
 
 
-extern Expression *parseAST();
+extern Node *parseAST(std::string filename);
 
 #endif

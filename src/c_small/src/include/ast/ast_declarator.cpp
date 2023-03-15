@@ -28,9 +28,16 @@ Declarator::cprint() {
 Declarator::codeprint(Context& cont) {
 	if(e==NULL) {
 		std::stringstream ss;
-		ss << "addiu $sp, $sp, -4\n";
-		cont.variableMap[id] = cont.currentStackOffset;
-		cont.currentStackOffset++;
+		ss << "new var declared\n";
 		return ss.str();
+	}
+}
+
+ExternalDeclaration::codeprint(Context& cont){
+	if(d != NULL){
+		d->codeprint(cont);
+	}
+	if(f != NULL){
+		f->codeprint(cont);
 	}
 }

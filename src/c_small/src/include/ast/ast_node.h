@@ -34,10 +34,7 @@ public:
 };
 
 class Statement : public Node {
-	std::string print() override ;
-	std::string cprint() override ;
-	std::string codeprint(Context& cont) override ;
-			
+
 };
 class Expression : public Node {
 public:
