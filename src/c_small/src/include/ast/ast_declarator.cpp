@@ -1,5 +1,6 @@
 #include "ast_all.h"
-
+#include "ast_declarator.h"
+#include <iostream>
 
 Declarator::print() {
 	std::stringstream ss;
