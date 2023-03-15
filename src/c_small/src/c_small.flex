@@ -24,11 +24,11 @@ return      { return KW_RETURN; }
 [\;]            { return T_SEMICOLON; }
 
 
-0[0-7]*             { yyval.string=yytext; return T_OCTAL_CONST; }
-0[xX][0-9a-fA-F]+   { yyval.string=yytext; return T_HEX_CONST; }
-[1-9][0-9]*         { yyval.string=yytext; return T_DECIMAL_CONST; }
-L?'[^\'\\\n]+'      { yyval.string=yytext; return T_CHAR_CONST; }
-[A-z_][0-9A-z_]*    { yyval.string=yytext; return T_IDENTIFIER; }
+0[0-7]*             { yylval.str=yytext; return T_OCTAL_CONST; }
+0[xX][0-9a-fA-F]+   { yylval.str=yytext; return T_HEX_CONST; }
+[1-9][0-9]*         { yylval.str=yytext; return T_DECIMAL_CONST; }
+L?'[^\'\\\n]+'      { yylval.str=yytext; return T_CHAR_CONST; }
+[A-z_][0-9A-z_]*    { yylval.str=yytext; return T_IDENTIFIER; }
 
 [ \t\r\n]+		{;}
 
