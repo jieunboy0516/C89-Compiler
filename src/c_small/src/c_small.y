@@ -1,8 +1,10 @@
 %code requires{
   #include "../src/include/ast.hpp"
   #include <cassert>
+  #include <string>
+  #include <iostream>
 
-  extern const Node *g_root; // A way of getting the AST out
+  extern Node *g_root; // A way of getting the AST out
   extern FILE *yyin;
 
   //! This is to fix problems when generating C++
@@ -63,11 +65,11 @@
 
 %%
 
-ROOT: TOPLEVEL { g_root = new ExternalDecList($1);}
+ROOT: TOPLEVEL { g_root = new ExternalDecList({$1});}
     ;
 
 TOPLEVEL: FUNCTION_DEF {$$ = $1;}
-        | TOPLEVEL FUNCTION_DEF {$$ = ExternalDecList($1, $2);}
+        | TOPLEVEL FUNCTION_DEF {$$ = ExternalDecList({$1, $2});}
         ;
 
 FUNCTION_DEF: TYPE T_IDENTIFIER T_LBRACKET T_RBRACKET COMPOUND_STATEMENT {$$ = new FuncDef($1, $2, $5);}
@@ -76,8 +78,8 @@ FUNCTION_DEF: TYPE T_IDENTIFIER T_LBRACKET T_RBRACKET COMPOUND_STATEMENT {$$ = n
 COMPOUND_STATEMENT: T_LCURLYBRACKET STATEMENT_LIST T_RCURLYBRACKET {$$ = $2;}
                   ;
 
-STATEMENT_LIST: STATEMENT {$$ = new StatList($1);}
-              | STATEMENT_LIST STATEMENT  {$$ = new StatList($1, $2);}
+STATEMENT_LIST: STATEMENT {$$ = new StatList({$1});}
+              | STATEMENT_LIST STATEMENT  {$$ = new StatList({$1, $2});}
               ;
 
 STATEMENT: JUMP_STATEMENT {$$ = $1;}
@@ -89,7 +91,7 @@ JUMP_STATEMENT: KW_RETURN EXPRESSION T_SEMICOLON {$$ = new Statement($1, $2)}
 EXPRESSION: CONSTANT {$$ = $1;}
           ;
 
-CONSTANT: T_DECIMAL_CONST {$$ = new ConstantValue(stoi(yyval.string));}
+CONSTANT: T_DECIMAL_CONST {$$ = new ConstantValue(std::stoi(yyval.string));}
         /* | T_OCTAL_CONST {} 
         | T_HEX_CONST  {}
         | T_CHAR_CONST {} */

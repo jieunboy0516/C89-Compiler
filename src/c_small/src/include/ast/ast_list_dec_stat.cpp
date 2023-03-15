@@ -73,3 +73,8 @@ StatList::codeprint(Context& cont) {
 		}
 		return ss.str();
 	}
+
+ExternalDecList::addToList(ExternalDeclaration* extDec_in){
+	exdeclist.push_back(extDec_in);
+	return;
+}

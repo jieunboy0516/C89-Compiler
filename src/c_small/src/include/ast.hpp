@@ -4,6 +4,6 @@
 #include "ast/ast_all.h"
 
 
-extern const Expression *parseAST();
+extern Expression *parseAST();
 
 #endif

@@ -2,6 +2,7 @@
 #define __DECLARATOR__
 #include "ast_all.h"
 #include "ast_node.h"
+#include "ast_funcdef.h"
 
 class Declarator : public Node {
 private:
@@ -23,7 +24,7 @@ private:
 public:
 	ExternalDeclaration(FuncDef* f_in): f(f_in) {};
 	ExternalDeclaration(Declarator* d_in): d(d_in) {};
-}
+};
 
 
 #endif
