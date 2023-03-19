@@ -107,9 +107,9 @@ EXPRESSION: CONSTANT {$$ = $1;}
           ;
 
 CONSTANT: T_DECIMAL_CONST {$$ = new ConstantValue(std::stoi(*yylval.str));}
-        /* | T_OCTAL_CONST {} 
-        | T_HEX_CONST  {}
-        | T_CHAR_CONST {} */
+        | T_OCTAL_CONST {$$ = new ConstantValue(std::stoi(*yylval.str, 0, 8));} 
+        | T_HEX_CONST  {$$ = new ConstantValue(std::stoi(*yylval.str, 0 , 16));}
+        | T_CHAR_CONST {$$ = new ConstantValue((int)(*yylval.str)[0]);}
         ;
 
 
