@@ -12,8 +12,59 @@ extern "C" int fileno(FILE *stream);
 
 
 
+
+[*]             { return T_TIMES; }
+[+]             { return T_PLUS; }
+[\^]            { return T_EXPONENT; }
+[-]             { return T_MINUS; }
+[\/]            { return T_DIVIDE; }
+[\.]            { return T_PERIOD; }
+[\-]            { return T_HYPHON; }
+[\!]            { return T_EXCLAIM; }
+[\?]            { return T_QUESTION; }
+[\,]            { return T_COMMA; }
+[\<]            { return T_LESSTHAN; }
+[\>]            { return T_GREATERTHAN; }
+[\&]            { return T_AND; }
+[\%]            { return T_PERCENT; }
+[\~]            { return T_TILDE; }
+[\:]            { return T_COLON; }
+[\|]            { return T_VERTICALBAR; }
+[\=]            { return T_EQUALS;}
+[\#]            { return T_HASH; }
+
+
+
 int         { std::string* strptr = new std::string(yytext); 
-              yylval.str=strptr; std::cout<<yytext<<std::endl;return KW_INT; }
+              yylval.str=strptr; std::cout<<yytext<<std::endl; 
+              yylval.tokentype = KW_INT;
+              return KW_INT; }
+auto        { return KW_AUTO; }
+double      { return KW_DOUBLE; }
+struct      { return KW_STRUCT; }
+break       { return KW_BREAK; }
+else        { return KW_ELSE; }
+long        { return KW_LONG; }
+switch      { return KW_SWITCH; }
+case        { return KW_CASE; }
+enum        { return KW_ENUM; }
+register    { return KW_REGISTER; }
+typedef     { return KW_TYPEDEF; }
+char        { return KW_CHAR; }
+extern      { return KW_EXTERN; }
+union       { return KW_UNION; }
+const       { return KW_CONST; }
+for         { return KW_FOR; }
+signed      { return KW_SIGNED; }
+void        { return KW_VOID; }
+default     { return KW_DEFUALT; }
+goto        { return KW_GOTO; }
+sizeof      { return KW_SIZEOF; }
+volatile    { return KW_VOLATILE; }
+do          { return KW_DO; }
+if          { return KW_IF; }
+static      { return KW_STATIC; }
+while       { return KW_WHILE; }
 return      { std::cout<<yytext<<std::endl; return KW_RETURN; }
 
 
@@ -26,11 +77,11 @@ return      { std::cout<<yytext<<std::endl; return KW_RETURN; }
 [\;]            { std::cout<<yytext<<std::endl;return T_SEMICOLON; }
 
 
-0[0-7]*             { std::string* strptr = new std::string(yytext);
+[+-]?0[0-7]*             { std::string* strptr = new std::string(yytext);
                       yylval.str=strptr; return T_OCTAL_CONST; }
-0[xX][0-9a-fA-F]+   {std::string* strptr = new std::string(yytext);
+[+-]?0[xX][0-9a-fA-F]+   {std::string* strptr = new std::string(yytext);
                       yylval.str=strptr; return T_HEX_CONST; }
-[1-9][0-9]*         { std::string* strptr = new std::string(yytext);
+[+-]?[1-9][0-9]*         { std::string* strptr = new std::string(yytext);
                       yylval.str=strptr; return T_DECIMAL_CONST; }
 L?'[^\'\\\n]+'      { std::string* strptr = new std::string(yytext);
                       yylval.str=strptr;  return T_CHAR_CONST; }

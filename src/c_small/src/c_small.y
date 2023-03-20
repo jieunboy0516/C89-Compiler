@@ -1,5 +1,6 @@
 %code requires{
   #include "../src/include/ast.hpp"
+  #include "../src/include/ast/tokens.hpp"
   #include <cassert>
   #include <string>
   #include <iostream>
@@ -20,6 +21,7 @@
   std::string* str;
   int num;
   double floatnum;
+  yytokentype tokentype;
 
   class FuncDef* FuncDefPtr;
   class StatList* StatListPtr;
@@ -37,22 +39,25 @@
 %type <CompoundStatPtr> COMPOUND_STATEMENT
 %type <StatListPtr> STATEMENT_LIST 
 %type <StatPtr> KW_RETURN
-%type <StatPtr> JUMP_STATEMENT
+%type <StatPtr> JUMP_STATEMENT IF_STATEMENT
 %type <ExpPtr> EXPRESSION
 %type <ExpPtr> CONSTANT
-%type <str> TYPE
+%type <tokentype> TYPE
 %type <str> T_IDENTIFIER
+%type <DecPtr> DECLARATION
+
 
 // C89 Keywords: int, float, if, etc...
-%token KW_INT KW_RETURN
+%token KW_AUTO KW_DOUBLE KW_INT KW_STRUCT KW_BREAK KW_ELSE KW_LONG KW_SWITCH KW_CASE KW_ENUM KW_REGISTER KW_TYPEDEF KW_CHAR KW_EXTERN KW_RETURN 
+%token KW_UNION KW_CONST KW_FOR KW_SIGNED KW_VOID KW_DEFUALT KW_GOTO KW_SIZEOF KW_VOLATILE KW_DO KW_IF KW_STATIC KW_WHILE
 
 
 // C89 constant operators
 
-
-
+%token T_LSQUAREBRACKET T_RSQUAREBRACKET T_LBRACKET T_RBRACKET T_LCURLYBRACKET T_RCURLYBRACKET;
+%token T_PERIOD T_HYPHON T_EXCLAIM T_EXPONENT T_QUESTION T_COMMA T_SEMICOLON T_LESSTHAN T_GREATERTHAN T_AND T_PERCENT T_PLUS T_MINUS T_TIMES T_DIVIDE T_TILDE 
+%token T_COLON T_VERTICALBAR T_EQUALS T_HASH
 %token T_NUMBER
-%token T_LSQUAREBRACKET T_RSQUAREBRACKET T_LBRACKET T_RBRACKET T_LCURLYBRACKET T_RCURLYBRACKET T_SEMICOLON;
 
 // C89 Constants: Floating consts, digits, exponents etc...
 %token T_DECIMAL_CONST T_OCTAL_CONST T_HEX_CONST T_CHAR_CONST
@@ -74,7 +79,7 @@ TOPLEVEL: FUNCTION_DEF {$$ = $1;}
         | TOPLEVEL FUNCTION_DEF {$$ = $2;}
         ;
 
-FUNCTION_DEF: TYPE T_IDENTIFIER T_LBRACKET T_RBRACKET COMPOUND_STATEMENT {$$ = new FuncDef(*$1, *$2, $5);}
+FUNCTION_DEF: TYPE T_IDENTIFIER T_LBRACKET T_RBRACKET COMPOUND_STATEMENT {$$ = new FuncDef($1, *$2, $5);}
             ;
 
 COMPOUND_STATEMENT: T_LCURLYBRACKET STATEMENT_LIST T_RCURLYBRACKET {$$ = new CompoundStatement(0,$2);  }
@@ -94,14 +99,21 @@ STATEMENT_LIST: STATEMENT {$$ = new StatList();
               ;
 
 STATEMENT: JUMP_STATEMENT {$$ = $1; }
+         | IF_STATEMENT {$$ = $1;}
         ;
 
-JUMP_STATEMENT: KW_RETURN EXPRESSION T_SEMICOLON {$$ = new JumpStatement(*yylval.str, $2);
-                                                  std::cout << "STATEMENT LOL" <<std::endl;
+DECLARATION : 
+          TYPE T_IDENTIFIER T_SEMICOLON {$$ = new Declaration(*$1, *$2);}
+        | TYPE T_IDENTIFIER T_EQUALS EXPRESSION T_SEMICOLON {$$ = new Declaration(*$1, *$2, $4);}
+        ;
 
- 
-                                                  }
+
+JUMP_STATEMENT: KW_RETURN EXPRESSION T_SEMICOLON {$$ = new JumpStatement(*yylval.str, $2);
+                                                  std::cout << "STATEMENT LOL" <<std::endl;}
               ;
+
+IF_STATEMENT: KW_IF T_LBRACKET EXPRESSION T_RBRACKET STATEMENT {$$ = new IfStatement($3, $5);}
+            ;
 
 EXPRESSION: CONSTANT {$$ = $1;}
           ;
@@ -113,7 +125,7 @@ CONSTANT: T_DECIMAL_CONST {$$ = new ConstantValue(std::stoi(*yylval.str));}
         ;
 
 
-TYPE: KW_INT {$$ = yylval.str;}
+TYPE: KW_INT {$$ = yylval.tokentype;}
     ;  
 
 %%

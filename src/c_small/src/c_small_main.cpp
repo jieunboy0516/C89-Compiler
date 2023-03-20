@@ -8,7 +8,6 @@
 #include <iomanip>
 
 #include "./include/ast.hpp"
-#include "../bin/c_small.tab.hpp"
 
 
 
