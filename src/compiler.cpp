@@ -18,7 +18,7 @@ void compile(std::ostream &w)
 }
 
 // using Flex/Bison.
-extern FILE *yyin;
+FILE *yyin;
 
 int main(int argc, char **argv)
 {
