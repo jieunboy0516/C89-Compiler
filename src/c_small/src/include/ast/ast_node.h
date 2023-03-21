@@ -16,16 +16,22 @@
 class Context {
 public:
 	int currentStackOffset;
-	int nextVariableLocation;
 	std::map <std::string, int> variableMap;
 	Context() {
 		currentStackOffset = 0;
 	}
 	// Function to return the next memory address available for a new variable
 	int getNewVariableAddress() {
-		currentStackOffset -= 4;
-		return currentStackOffset;
+		//Get largest key value from varaibleMap
+		int largestKey = 0;
+		for (std::map<std::string, int>::iterator it = variableMap.begin(); it != variableMap.end(); ++it) {
+			if (it->second > largestKey) {
+				largestKey = it->second;
+			}
+		}
+		return largestKey + 4;
 	}
+
 };
 
 class Node {

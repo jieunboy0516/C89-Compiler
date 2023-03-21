@@ -21,7 +21,8 @@ public:
 
 	std::string print() override{
 		std::stringstream ss;
-
+		ss << "start of function and return type" << name << " " << returnType << "\n";
+		ss << cs->print();
 		return ss.str();
 	}
 
@@ -33,13 +34,15 @@ public:
 
 	std::string codeprint(Context& cont) override{
 		std::stringstream ss;
-		ss << "start of function and return type" << name << " " << returnType << "\n";
-		ss << cs->codeprint(cont);
+		Context funcContext = Context();
+		ss << "li $fp, " << cont.currentStackOffset << "\n";
+		ss << name << ":" << "\n";
+		funcContext.currentStackOffset = cont.getNewVariableAddress(); //Set new stack offset to the end of the previous stack.
+		ss << "li $sp, " << funcContext.currentStackOffset << "\n";
+		ss << cs->codeprint(funcContext);
 		return ss.str();
 	}
 
 };
-
-
 
 #endif
