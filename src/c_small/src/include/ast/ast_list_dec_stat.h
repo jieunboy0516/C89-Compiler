@@ -17,6 +17,32 @@ public:
 	DecList(){};
 	void addToList(Declarator* dec_in) {
 	};
+	std::string print() override{
+		std::stringstream ss;
+
+		return ss.str();
+	}
+
+	std::string cprint() override{
+		std::stringstream ss;
+
+		return ss.str();
+	}
+
+	std::string codeprint(Context& cont) override{
+		std::stringstream ss;
+		for (std::list<Declarator*>::iterator it=dlist.begin(); it!=dlist.end(); ++it) {
+    		if((*it)!=NULL) {
+				ss << ((*it)->codeprint(cont)); 
+    		}
+		}
+		return ss.str();
+	}
+
+	void addToList(Declarator* stat_in) {
+		dlist.push_back(stat_in);
+		return;
+	}
 
 };
 
@@ -42,7 +68,6 @@ public:
 		std::stringstream ss;
 		for (std::list<Statement*>::iterator it=slist.begin(); it!=slist.end(); ++it) {
     		if((*it)!=NULL) {
-    			//std::cerr << "STAT2" << std::endl;
 				ss << ((*it)->codeprint(cont)); 
     		}
 		}

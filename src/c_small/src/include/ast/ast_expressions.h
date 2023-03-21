@@ -8,7 +8,6 @@
 
 
 
-
 class ConstantValue : public Expression {
 private:
 	int value;

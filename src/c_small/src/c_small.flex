@@ -6,10 +6,10 @@ extern "C" int fileno(FILE *stream);
 
 #include "../bin/c_small.tab.hpp"
 #include <string>
+#include "../src/include/ast/types.hpp"
 %}
 
 %%
-
 
 
 
@@ -37,10 +37,13 @@ extern "C" int fileno(FILE *stream);
 
 int         { std::string* strptr = new std::string(yytext); 
               yylval.str=strptr; std::cout<<yytext<<std::endl; 
-              yylval.tokentype = KW_INT;
+              yylval.datatype = INT;
               return KW_INT; }
 auto        { return KW_AUTO; }
-double      { return KW_DOUBLE; }
+double      { std::string* strptr = new std::string(yytext); 
+              yylval.str=strptr; std::cout<<yytext<<std::endl; 
+              yylval.datatype = DOUBLE;
+              return KW_INT; return KW_DOUBLE; }
 struct      { return KW_STRUCT; }
 break       { return KW_BREAK; }
 else        { return KW_ELSE; }
@@ -50,7 +53,10 @@ case        { return KW_CASE; }
 enum        { return KW_ENUM; }
 register    { return KW_REGISTER; }
 typedef     { return KW_TYPEDEF; }
-char        { return KW_CHAR; }
+char        { std::string* strptr = new std::string(yytext); 
+              yylval.str=strptr; std::cout<<yytext<<std::endl; 
+              yylval.datatype = CHAR;
+              return KW_CHAR; }
 extern      { return KW_EXTERN; }
 union       { return KW_UNION; }
 const       { return KW_CONST; }

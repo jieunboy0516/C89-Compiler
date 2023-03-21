@@ -48,7 +48,7 @@ extern int yydebug;
 #line 1 "src/c_small.y"
 
   #include "../src/include/ast.hpp"
-  #include "../src/include/ast/tokens.hpp"
+  #include "../src/include/ast/types.hpp"
   #include <cassert>
   #include <string>
   #include <iostream>
@@ -153,7 +153,7 @@ union YYSTYPE
   std::string* str;
   int num;
   double floatnum;
-  yytokentype tokentype;
+  DataType datatype;
 
   class FuncDef* FuncDefPtr;
   class StatList* StatListPtr;
@@ -163,9 +163,10 @@ union YYSTYPE
   class DecList* DecListPtr;
   class ExternalDecList* ExternalDecListPtr;
   class CompoundStatement* CompoundStatPtr;
+  class WhileStatement* WhileStatPtr;
    
 
-#line 169 "bin/c_small.tab.hpp"
+#line 170 "bin/c_small.tab.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;

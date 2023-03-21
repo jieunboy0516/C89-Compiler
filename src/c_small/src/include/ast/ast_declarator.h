@@ -1,18 +1,18 @@
 #ifndef __DECLARATOR__
 #define __DECLARATOR__
 //#include "ast_all.h"
-#include "tokens.hpp"
+#include "types.hpp"
 #include "ast_node.h"
 #include "ast_funcdef.h"
 
 class Declarator : public Node {
 private:
-	yytokentype type;
+	DataType type;
 	std::string id;
 	Expression* e;
 
 public:
-	Declarator(yytokentype type_in, std::string id_in, Expression* e_in) : type(type_in), id(id_in), e(e_in) {};
+	Declarator(DataType type_in, std::string id_in, Expression* e_in) : type(type_in), id(id_in), e(e_in) {};
 
 };
 

@@ -564,8 +564,9 @@ extern "C" int fileno(FILE *stream);
 
 #include "../bin/c_small.tab.hpp"
 #include <string>
-#line 568 "bin/c_small.yy.cpp"
+#include "../src/include/ast/types.hpp"
 #line 569 "bin/c_small.yy.cpp"
+#line 570 "bin/c_small.yy.cpp"
 
 #define INITIAL 0
 
@@ -782,13 +783,13 @@ YY_DECL
 		}
 
 	{
-#line 11 "src/c_small.flex"
+#line 12 "src/c_small.flex"
 
 
 
 
 
-#line 792 "bin/c_small.yy.cpp"
+#line 793 "bin/c_small.yy.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -847,323 +848,329 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 16 "src/c_small.flex"
+#line 17 "src/c_small.flex"
 { return T_TIMES; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 17 "src/c_small.flex"
+#line 18 "src/c_small.flex"
 { return T_PLUS; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 18 "src/c_small.flex"
+#line 19 "src/c_small.flex"
 { return T_EXPONENT; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 19 "src/c_small.flex"
+#line 20 "src/c_small.flex"
 { return T_MINUS; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 20 "src/c_small.flex"
+#line 21 "src/c_small.flex"
 { return T_DIVIDE; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 21 "src/c_small.flex"
+#line 22 "src/c_small.flex"
 { return T_PERIOD; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 22 "src/c_small.flex"
+#line 23 "src/c_small.flex"
 { return T_HYPHON; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 23 "src/c_small.flex"
+#line 24 "src/c_small.flex"
 { return T_EXCLAIM; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 24 "src/c_small.flex"
+#line 25 "src/c_small.flex"
 { return T_QUESTION; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 25 "src/c_small.flex"
+#line 26 "src/c_small.flex"
 { return T_COMMA; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 26 "src/c_small.flex"
+#line 27 "src/c_small.flex"
 { return T_LESSTHAN; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 27 "src/c_small.flex"
+#line 28 "src/c_small.flex"
 { return T_GREATERTHAN; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 28 "src/c_small.flex"
+#line 29 "src/c_small.flex"
 { return T_AND; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 29 "src/c_small.flex"
+#line 30 "src/c_small.flex"
 { return T_PERCENT; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 30 "src/c_small.flex"
+#line 31 "src/c_small.flex"
 { return T_TILDE; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 31 "src/c_small.flex"
+#line 32 "src/c_small.flex"
 { return T_COLON; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 32 "src/c_small.flex"
+#line 33 "src/c_small.flex"
 { return T_VERTICALBAR; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 33 "src/c_small.flex"
+#line 34 "src/c_small.flex"
 { return T_EQUALS;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 34 "src/c_small.flex"
+#line 35 "src/c_small.flex"
 { return T_HASH; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 38 "src/c_small.flex"
+#line 39 "src/c_small.flex"
 { std::string* strptr = new std::string(yytext); 
               yylval.str=strptr; std::cout<<yytext<<std::endl; 
-              yylval.tokentype = KW_INT;
+              yylval.datatype = INT;
               return KW_INT; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 42 "src/c_small.flex"
+#line 43 "src/c_small.flex"
 { return KW_AUTO; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 43 "src/c_small.flex"
-{ return KW_DOUBLE; }
+#line 44 "src/c_small.flex"
+{ std::string* strptr = new std::string(yytext); 
+              yylval.str=strptr; std::cout<<yytext<<std::endl; 
+              yylval.datatype = DOUBLE;
+              return KW_INT; return KW_DOUBLE; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 44 "src/c_small.flex"
+#line 48 "src/c_small.flex"
 { return KW_STRUCT; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 45 "src/c_small.flex"
+#line 49 "src/c_small.flex"
 { return KW_BREAK; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 46 "src/c_small.flex"
+#line 50 "src/c_small.flex"
 { return KW_ELSE; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 47 "src/c_small.flex"
+#line 51 "src/c_small.flex"
 { return KW_LONG; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 48 "src/c_small.flex"
+#line 52 "src/c_small.flex"
 { return KW_SWITCH; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 49 "src/c_small.flex"
+#line 53 "src/c_small.flex"
 { return KW_CASE; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 50 "src/c_small.flex"
+#line 54 "src/c_small.flex"
 { return KW_ENUM; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 51 "src/c_small.flex"
+#line 55 "src/c_small.flex"
 { return KW_REGISTER; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 52 "src/c_small.flex"
+#line 56 "src/c_small.flex"
 { return KW_TYPEDEF; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 53 "src/c_small.flex"
-{ return KW_CHAR; }
+#line 57 "src/c_small.flex"
+{ std::string* strptr = new std::string(yytext); 
+              yylval.str=strptr; std::cout<<yytext<<std::endl; 
+              yylval.datatype = CHAR;
+              return KW_CHAR; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 54 "src/c_small.flex"
+#line 61 "src/c_small.flex"
 { return KW_EXTERN; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 55 "src/c_small.flex"
+#line 62 "src/c_small.flex"
 { return KW_UNION; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 56 "src/c_small.flex"
+#line 63 "src/c_small.flex"
 { return KW_CONST; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 57 "src/c_small.flex"
+#line 64 "src/c_small.flex"
 { return KW_FOR; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 58 "src/c_small.flex"
+#line 65 "src/c_small.flex"
 { return KW_SIGNED; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 59 "src/c_small.flex"
+#line 66 "src/c_small.flex"
 { return KW_VOID; }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 60 "src/c_small.flex"
+#line 67 "src/c_small.flex"
 { return KW_DEFUALT; }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 61 "src/c_small.flex"
+#line 68 "src/c_small.flex"
 { return KW_GOTO; }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 62 "src/c_small.flex"
+#line 69 "src/c_small.flex"
 { return KW_SIZEOF; }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 63 "src/c_small.flex"
+#line 70 "src/c_small.flex"
 { return KW_VOLATILE; }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 64 "src/c_small.flex"
+#line 71 "src/c_small.flex"
 { return KW_DO; }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 65 "src/c_small.flex"
+#line 72 "src/c_small.flex"
 { return KW_IF; }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 66 "src/c_small.flex"
+#line 73 "src/c_small.flex"
 { return KW_STATIC; }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 67 "src/c_small.flex"
+#line 74 "src/c_small.flex"
 { return KW_WHILE; }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 68 "src/c_small.flex"
+#line 75 "src/c_small.flex"
 { std::cout<<yytext<<std::endl; return KW_RETURN; }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 71 "src/c_small.flex"
+#line 78 "src/c_small.flex"
 {std::cout<<yytext<<std::endl; return T_LBRACKET; }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 72 "src/c_small.flex"
+#line 79 "src/c_small.flex"
 { std::cout<<yytext<<std::endl;return T_RBRACKET; }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 73 "src/c_small.flex"
+#line 80 "src/c_small.flex"
 {std::cout<<yytext<<std::endl; return T_LSQUAREBRACKET; }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 74 "src/c_small.flex"
+#line 81 "src/c_small.flex"
 { std::cout<<yytext<<std::endl;return T_RSQUAREBRACKET; }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 75 "src/c_small.flex"
+#line 82 "src/c_small.flex"
 { std::cout<<yytext<<std::endl;return T_LCURLYBRACKET;  }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 76 "src/c_small.flex"
+#line 83 "src/c_small.flex"
 {std::cout<<yytext<<std::endl; return T_RCURLYBRACKET;  }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 77 "src/c_small.flex"
+#line 84 "src/c_small.flex"
 { std::cout<<yytext<<std::endl;return T_SEMICOLON; }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 80 "src/c_small.flex"
+#line 87 "src/c_small.flex"
 { std::string* strptr = new std::string(yytext);
                       yylval.str=strptr; return T_OCTAL_CONST; }
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 82 "src/c_small.flex"
+#line 89 "src/c_small.flex"
 {std::string* strptr = new std::string(yytext);
                       yylval.str=strptr; return T_HEX_CONST; }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 84 "src/c_small.flex"
+#line 91 "src/c_small.flex"
 { std::string* strptr = new std::string(yytext);
                       yylval.str=strptr; return T_DECIMAL_CONST; }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 86 "src/c_small.flex"
+#line 93 "src/c_small.flex"
 { std::string* strptr = new std::string(yytext);
                       yylval.str=strptr;  return T_CHAR_CONST; }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 88 "src/c_small.flex"
+#line 95 "src/c_small.flex"
 { std::string* strptr = new std::string(yytext);  return T_IDENTIFIER; }
 	YY_BREAK
 case 60:
 /* rule 60 can match eol */
 YY_RULE_SETUP
-#line 90 "src/c_small.flex"
+#line 97 "src/c_small.flex"
 {std::cout<<yytext<<std::endl;}
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 92 "src/c_small.flex"
+#line 99 "src/c_small.flex"
 { fprintf(stderr, "Invalid token\n"); exit(1); }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 93 "src/c_small.flex"
+#line 100 "src/c_small.flex"
 ECHO;
 	YY_BREAK
-#line 1167 "bin/c_small.yy.cpp"
+#line 1174 "bin/c_small.yy.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2168,7 +2175,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 93 "src/c_small.flex"
+#line 100 "src/c_small.flex"
 
 
 void yyerror (char const *s)

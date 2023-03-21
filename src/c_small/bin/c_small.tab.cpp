@@ -169,12 +169,15 @@ enum yysymbol_kind_t
   YYSYMBOL_FUNCTION_DEF = 73,              /* FUNCTION_DEF  */
   YYSYMBOL_COMPOUND_STATEMENT = 74,        /* COMPOUND_STATEMENT  */
   YYSYMBOL_STATEMENT_LIST = 75,            /* STATEMENT_LIST  */
-  YYSYMBOL_STATEMENT = 76,                 /* STATEMENT  */
-  YYSYMBOL_JUMP_STATEMENT = 77,            /* JUMP_STATEMENT  */
-  YYSYMBOL_IF_STATEMENT = 78,              /* IF_STATEMENT  */
-  YYSYMBOL_EXPRESSION = 79,                /* EXPRESSION  */
-  YYSYMBOL_CONSTANT = 80,                  /* CONSTANT  */
-  YYSYMBOL_TYPE = 81                       /* TYPE  */
+  YYSYMBOL_DECLARATION_LIST = 76,          /* DECLARATION_LIST  */
+  YYSYMBOL_STATEMENT = 77,                 /* STATEMENT  */
+  YYSYMBOL_DECLARATION = 78,               /* DECLARATION  */
+  YYSYMBOL_JUMP_STATEMENT = 79,            /* JUMP_STATEMENT  */
+  YYSYMBOL_ITERATION_STATEMENT = 80,       /* ITERATION_STATEMENT  */
+  YYSYMBOL_IF_STATEMENT = 81,              /* IF_STATEMENT  */
+  YYSYMBOL_EXPRESSION = 82,                /* EXPRESSION  */
+  YYSYMBOL_CONSTANT = 83,                  /* CONSTANT  */
+  YYSYMBOL_TYPE = 84                       /* TYPE  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -502,16 +505,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  6
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   21
+#define YYLAST   69
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  70
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  12
+#define YYNNTS  15
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  18
+#define YYNRULES  29
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  32
+#define YYNSTATES  58
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   324
@@ -567,8 +570,9 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    75,    75,    78,    79,    82,    85,    91,    95,   101,
-     102,   111,   115,   118,   121,   122,   123,   124,   128
+       0,    77,    77,    80,    81,    84,    87,    88,    89,    95,
+      99,   105,   109,   115,   116,   117,   118,   121,   122,   126,
+     130,   131,   132,   135,   138,   141,   142,   143,   144,   148
 };
 #endif
 
@@ -599,8 +603,9 @@ static const char *const yytname[] =
   "T_IDENTIFIER", "T_E", "T_SUFFIX_F", "T_SUFFIX_L", "T_SUFFIX_U",
   "T_DOUBLE_QUOTE", "T_SINGLE_QUOTE", "T_LITERAL_STRING", "$accept",
   "ROOT", "TOPLEVEL", "FUNCTION_DEF", "COMPOUND_STATEMENT",
-  "STATEMENT_LIST", "STATEMENT", "JUMP_STATEMENT", "IF_STATEMENT",
-  "EXPRESSION", "CONSTANT", "TYPE", YY_NULLPTR
+  "STATEMENT_LIST", "DECLARATION_LIST", "STATEMENT", "DECLARATION",
+  "JUMP_STATEMENT", "ITERATION_STATEMENT", "IF_STATEMENT", "EXPRESSION",
+  "CONSTANT", "TYPE", YY_NULLPTR
 };
 
 static const char *
@@ -610,7 +615,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-56)
+#define YYPACT_NINF (-52)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -624,10 +629,12 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-       2,   -56,     8,     2,   -56,   -53,   -56,   -56,   -23,   -22,
-     -21,   -15,   -56,   -55,   -18,   -17,   -56,   -56,   -56,   -56,
-     -56,   -56,   -56,   -26,   -56,   -55,   -56,   -56,   -56,   -16,
-     -15,   -56
+       0,   -52,     6,     0,   -52,   -51,   -52,   -52,   -21,   -20,
+     -19,     2,   -52,     8,    30,   -16,   -15,   -52,    14,    -2,
+     -52,   -52,   -52,   -52,   -52,   -41,   -52,   -52,   -52,   -52,
+     -23,   -52,    -3,     8,     8,   -52,   -52,   -52,    26,   -52,
+     -42,   -52,     5,    11,    12,   -52,   -52,     8,     8,    30,
+      30,    -4,    17,   -52,   -52,   -52,     9,   -52
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -635,24 +642,26 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,    18,     0,     2,     3,     0,     1,     4,     0,     0,
-       0,     0,     5,     0,     0,     0,     7,     9,    10,    14,
-      15,    16,    17,     0,    13,     0,     6,     8,    11,     0,
-       0,    12
+       0,    29,     0,     2,     3,     0,     1,     4,     0,     0,
+       0,    22,     5,     0,     0,     0,     0,    13,     0,     0,
+       9,    11,    14,    16,    15,     0,    25,    26,    27,    28,
+       0,    24,     0,     0,     0,     6,    10,     7,     0,    12,
+       0,    19,     0,     0,     0,     8,    17,     0,     0,    22,
+      22,     0,     0,    23,    20,    18,     0,    21
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -56,   -56,   -56,    17,   -56,   -56,   -14,   -56,   -56,    -4,
-     -56,   -56
+     -52,   -52,   -52,    37,    38,    36,   -52,   -14,    40,   -52,
+     -52,   -52,   -25,   -52,    -9
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     2,     3,     4,    12,    15,    16,    17,    18,    23,
-      24,     5
+       0,     2,     3,     4,    17,    18,    19,    20,    21,    22,
+      23,    24,    30,    31,     5
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -660,40 +669,52 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      13,    27,    13,    19,    20,    21,    22,     1,     6,     8,
-       9,    14,    10,    14,    11,    25,    31,    28,    30,    26,
-       7,    29
+      32,    46,    25,     1,    36,     1,     6,     1,    43,    44,
+      25,     8,     9,    47,    10,    13,    11,    33,    34,    13,
+      41,    40,    51,    52,    36,    14,    15,    42,    16,    14,
+      15,    13,    16,    11,    37,    53,    54,    11,    48,    55,
+       7,    14,    15,    13,    16,    49,    50,    13,    12,    11,
+      35,    56,    57,    14,    15,    38,    16,    14,    15,    39,
+      16,    11,    45,     0,     0,    11,    26,    27,    28,    29
 };
 
 static const yytype_int8 yycheck[] =
 {
-      17,    15,    17,    58,    59,    60,    61,     5,     0,    62,
-      33,    28,    34,    28,    35,    33,    30,    43,    34,    36,
-       3,    25
+      14,    43,    11,     5,    18,     5,     0,     5,    33,    34,
+      19,    62,    33,    55,    34,    17,    35,    33,    33,    17,
+      43,    62,    47,    48,    38,    27,    28,    30,    30,    27,
+      28,    17,    30,    35,    36,    49,    50,    35,    33,    43,
+       3,    27,    28,    17,    30,    34,    34,    17,    10,    35,
+      36,    34,    43,    27,    28,    19,    30,    27,    28,    19,
+      30,    35,    36,    -1,    -1,    35,    58,    59,    60,    61
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     5,    71,    72,    73,    81,     0,    73,    62,    33,
-      34,    35,    74,    17,    28,    75,    76,    77,    78,    58,
-      59,    60,    61,    79,    80,    33,    36,    76,    43,    79,
-      34,    76
+       0,     5,    71,    72,    73,    84,     0,    73,    62,    33,
+      34,    35,    74,    17,    27,    28,    30,    74,    75,    76,
+      77,    78,    79,    80,    81,    84,    58,    59,    60,    61,
+      82,    83,    77,    33,    33,    36,    77,    36,    75,    78,
+      62,    43,    30,    82,    82,    36,    43,    55,    33,    34,
+      34,    82,    82,    77,    77,    43,    34,    43
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    70,    71,    72,    72,    73,    74,    75,    75,    76,
-      76,    77,    78,    79,    80,    80,    80,    80,    81
+       0,    70,    71,    72,    72,    73,    74,    74,    74,    75,
+      75,    76,    76,    77,    77,    77,    77,    78,    78,    79,
+      80,    80,    80,    81,    82,    83,    83,    83,    83,    84
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     1,     1,     2,     5,     3,     1,     2,     1,
-       1,     3,     5,     1,     1,     1,     1,     1,     1
+       0,     2,     1,     1,     2,     5,     3,     3,     4,     1,
+       2,     1,     2,     1,     1,     1,     1,     3,     5,     3,
+       5,     7,     0,     5,     1,     1,     1,     1,     1,     1
 };
 
 
@@ -1157,116 +1178,182 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* ROOT: TOPLEVEL  */
-#line 75 "src/c_small.y"
+#line 77 "src/c_small.y"
                { g_root = (yyvsp[0].FuncDefPtr);}
-#line 1163 "bin/c_small.tab.cpp"
+#line 1184 "bin/c_small.tab.cpp"
     break;
 
   case 3: /* TOPLEVEL: FUNCTION_DEF  */
-#line 78 "src/c_small.y"
+#line 80 "src/c_small.y"
                        {(yyval.FuncDefPtr) = (yyvsp[0].FuncDefPtr);}
-#line 1169 "bin/c_small.tab.cpp"
+#line 1190 "bin/c_small.tab.cpp"
     break;
 
   case 4: /* TOPLEVEL: TOPLEVEL FUNCTION_DEF  */
-#line 79 "src/c_small.y"
+#line 81 "src/c_small.y"
                                 {(yyval.FuncDefPtr) = (yyvsp[0].FuncDefPtr);}
-#line 1175 "bin/c_small.tab.cpp"
+#line 1196 "bin/c_small.tab.cpp"
     break;
 
   case 5: /* FUNCTION_DEF: TYPE T_IDENTIFIER T_LBRACKET T_RBRACKET COMPOUND_STATEMENT  */
-#line 82 "src/c_small.y"
-                                                                         {(yyval.FuncDefPtr) = new FuncDef((yyvsp[-4].tokentype), *(yyvsp[-3].str), (yyvsp[0].CompoundStatPtr));}
-#line 1181 "bin/c_small.tab.cpp"
+#line 84 "src/c_small.y"
+                                                                         {(yyval.FuncDefPtr) = new FuncDef((yyvsp[-4].datatype), *(yyvsp[-3].str), (yyvsp[0].CompoundStatPtr));}
+#line 1202 "bin/c_small.tab.cpp"
     break;
 
   case 6: /* COMPOUND_STATEMENT: T_LCURLYBRACKET STATEMENT_LIST T_RCURLYBRACKET  */
-#line 85 "src/c_small.y"
+#line 87 "src/c_small.y"
                                                                    {(yyval.CompoundStatPtr) = new CompoundStatement(0,(yyvsp[-1].StatListPtr));  }
-#line 1187 "bin/c_small.tab.cpp"
+#line 1208 "bin/c_small.tab.cpp"
     break;
 
-  case 7: /* STATEMENT_LIST: STATEMENT  */
-#line 91 "src/c_small.y"
+  case 7: /* COMPOUND_STATEMENT: T_LCURLYBRACKET DECLARATION_LIST T_RCURLYBRACKET  */
+#line 88 "src/c_small.y"
+                                                                     {(yyval.CompoundStatPtr) = new CompoundStatement((yyvsp[-1].DecListPtr),0);  }
+#line 1214 "bin/c_small.tab.cpp"
+    break;
+
+  case 8: /* COMPOUND_STATEMENT: T_LCURLYBRACKET DECLARATION_LIST STATEMENT_LIST T_RCURLYBRACKET  */
+#line 89 "src/c_small.y"
+                                                                                    {(yyval.CompoundStatPtr) = new CompoundStatement((yyvsp[-2].DecListPtr),(yyvsp[-1].StatListPtr));  }
+#line 1220 "bin/c_small.tab.cpp"
+    break;
+
+  case 9: /* STATEMENT_LIST: STATEMENT  */
+#line 95 "src/c_small.y"
                           {(yyval.StatListPtr) = new StatList();
                            (yyval.StatListPtr)->addToList((yyvsp[0].StatPtr));
                                     std::cout << "start" << std::endl; Context test = Context(); std::cout << (yyval.StatListPtr)->codeprint(test) << std::endl;; std::cout << "done" << std::endl; 
                           }
-#line 1196 "bin/c_small.tab.cpp"
+#line 1229 "bin/c_small.tab.cpp"
     break;
 
-  case 8: /* STATEMENT_LIST: STATEMENT_LIST STATEMENT  */
-#line 95 "src/c_small.y"
+  case 10: /* STATEMENT_LIST: STATEMENT_LIST STATEMENT  */
+#line 99 "src/c_small.y"
                                           {(yyvsp[-1].StatListPtr)->addToList((yyvsp[0].StatPtr));
                            (yyval.StatListPtr) = (yyvsp[-1].StatListPtr);
                                     std::cout << "start" << std::endl; Context test = Context(); std::cout << (yyval.StatListPtr)->codeprint(test) << std::endl;; std::cout << "done" << std::endl;  
                            }
-#line 1205 "bin/c_small.tab.cpp"
+#line 1238 "bin/c_small.tab.cpp"
     break;
 
-  case 9: /* STATEMENT: JUMP_STATEMENT  */
-#line 101 "src/c_small.y"
+  case 11: /* DECLARATION_LIST: DECLARATION  */
+#line 105 "src/c_small.y"
+                              {(yyval.DecListPtr) = new DecList();
+                           (yyval.DecListPtr)->addToList((yyvsp[0].DecPtr));
+                                    std::cout << "start" << std::endl; Context test = Context(); std::cout << (yyval.DecListPtr)->codeprint(test) << std::endl;; std::cout << "done" << std::endl; 
+                          }
+#line 1247 "bin/c_small.tab.cpp"
+    break;
+
+  case 12: /* DECLARATION_LIST: DECLARATION_LIST DECLARATION  */
+#line 109 "src/c_small.y"
+                                             {(yyvsp[-1].DecListPtr)->addToList((yyvsp[0].DecPtr));
+                           (yyval.DecListPtr) = (yyvsp[-1].DecListPtr);
+                                    std::cout << "start" << std::endl; Context test = Context(); std::cout << (yyval.DecListPtr)->codeprint(test) << std::endl;; std::cout << "done" << std::endl;  
+                           }
+#line 1256 "bin/c_small.tab.cpp"
+    break;
+
+  case 13: /* STATEMENT: COMPOUND_STATEMENT  */
+#line 115 "src/c_small.y"
+                              {(yyval.StatPtr) = (yyvsp[0].CompoundStatPtr);}
+#line 1262 "bin/c_small.tab.cpp"
+    break;
+
+  case 14: /* STATEMENT: JUMP_STATEMENT  */
+#line 116 "src/c_small.y"
                           {(yyval.StatPtr) = (yyvsp[0].StatPtr); }
-#line 1211 "bin/c_small.tab.cpp"
+#line 1268 "bin/c_small.tab.cpp"
     break;
 
-  case 10: /* STATEMENT: IF_STATEMENT  */
-#line 102 "src/c_small.y"
+  case 15: /* STATEMENT: IF_STATEMENT  */
+#line 117 "src/c_small.y"
                         {(yyval.StatPtr) = (yyvsp[0].StatPtr);}
-#line 1217 "bin/c_small.tab.cpp"
+#line 1274 "bin/c_small.tab.cpp"
     break;
 
-  case 11: /* JUMP_STATEMENT: KW_RETURN EXPRESSION T_SEMICOLON  */
-#line 111 "src/c_small.y"
+  case 16: /* STATEMENT: ITERATION_STATEMENT  */
+#line 118 "src/c_small.y"
+                               {(yyval.StatPtr) = (yyvsp[0].StatPtr);}
+#line 1280 "bin/c_small.tab.cpp"
+    break;
+
+  case 17: /* DECLARATION: TYPE T_IDENTIFIER T_SEMICOLON  */
+#line 121 "src/c_small.y"
+                                            {(yyval.DecPtr) = new Declaration((yyvsp[-2].datatype), *(yyvsp[-1].str), 0);}
+#line 1286 "bin/c_small.tab.cpp"
+    break;
+
+  case 18: /* DECLARATION: TYPE T_IDENTIFIER T_EQUALS EXPRESSION T_SEMICOLON  */
+#line 122 "src/c_small.y"
+                                                                {(yyval.DecPtr) = new Declaration((yyvsp[-4].datatype), *(yyvsp[-3].str), (yyvsp[-1].ExpPtr));}
+#line 1292 "bin/c_small.tab.cpp"
+    break;
+
+  case 19: /* JUMP_STATEMENT: KW_RETURN EXPRESSION T_SEMICOLON  */
+#line 126 "src/c_small.y"
                                                  {(yyval.StatPtr) = new JumpStatement(*yylval.str, (yyvsp[-1].ExpPtr));
                                                   std::cout << "STATEMENT LOL" <<std::endl;}
-#line 1224 "bin/c_small.tab.cpp"
+#line 1299 "bin/c_small.tab.cpp"
     break;
 
-  case 12: /* IF_STATEMENT: KW_IF T_LBRACKET EXPRESSION T_RBRACKET STATEMENT  */
-#line 115 "src/c_small.y"
+  case 20: /* ITERATION_STATEMENT: KW_WHILE T_LBRACKET EXPRESSION T_RBRACKET STATEMENT  */
+#line 130 "src/c_small.y"
+                                                                         {(yyval.StatPtr) = new WhileStatement((yyvsp[-2].ExpPtr), (yyvsp[0].StatPtr), false);}
+#line 1305 "bin/c_small.tab.cpp"
+    break;
+
+  case 21: /* ITERATION_STATEMENT: KW_DO STATEMENT KW_WHILE T_LBRACKET EXPRESSION T_RBRACKET T_SEMICOLON  */
+#line 131 "src/c_small.y"
+                                                                                           {(yyval.StatPtr) = new WhileStatement((yyvsp[-2].ExpPtr), (yyvsp[-5].StatPtr), true);}
+#line 1311 "bin/c_small.tab.cpp"
+    break;
+
+  case 23: /* IF_STATEMENT: KW_IF T_LBRACKET EXPRESSION T_RBRACKET STATEMENT  */
+#line 135 "src/c_small.y"
                                                                {(yyval.StatPtr) = new IfStatement((yyvsp[-2].ExpPtr), (yyvsp[0].StatPtr));}
-#line 1230 "bin/c_small.tab.cpp"
+#line 1317 "bin/c_small.tab.cpp"
     break;
 
-  case 13: /* EXPRESSION: CONSTANT  */
-#line 118 "src/c_small.y"
+  case 24: /* EXPRESSION: CONSTANT  */
+#line 138 "src/c_small.y"
                      {(yyval.ExpPtr) = (yyvsp[0].ExpPtr);}
-#line 1236 "bin/c_small.tab.cpp"
+#line 1323 "bin/c_small.tab.cpp"
     break;
 
-  case 14: /* CONSTANT: T_DECIMAL_CONST  */
-#line 121 "src/c_small.y"
+  case 25: /* CONSTANT: T_DECIMAL_CONST  */
+#line 141 "src/c_small.y"
                           {(yyval.ExpPtr) = new ConstantValue(std::stoi(*yylval.str));}
-#line 1242 "bin/c_small.tab.cpp"
+#line 1329 "bin/c_small.tab.cpp"
     break;
 
-  case 15: /* CONSTANT: T_OCTAL_CONST  */
-#line 122 "src/c_small.y"
+  case 26: /* CONSTANT: T_OCTAL_CONST  */
+#line 142 "src/c_small.y"
                         {(yyval.ExpPtr) = new ConstantValue(std::stoi(*yylval.str, 0, 8));}
-#line 1248 "bin/c_small.tab.cpp"
+#line 1335 "bin/c_small.tab.cpp"
     break;
 
-  case 16: /* CONSTANT: T_HEX_CONST  */
-#line 123 "src/c_small.y"
+  case 27: /* CONSTANT: T_HEX_CONST  */
+#line 143 "src/c_small.y"
                        {(yyval.ExpPtr) = new ConstantValue(std::stoi(*yylval.str, 0 , 16));}
-#line 1254 "bin/c_small.tab.cpp"
+#line 1341 "bin/c_small.tab.cpp"
     break;
 
-  case 17: /* CONSTANT: T_CHAR_CONST  */
-#line 124 "src/c_small.y"
+  case 28: /* CONSTANT: T_CHAR_CONST  */
+#line 144 "src/c_small.y"
                        {(yyval.ExpPtr) = new ConstantValue((int)(*yylval.str)[0]);}
-#line 1260 "bin/c_small.tab.cpp"
+#line 1347 "bin/c_small.tab.cpp"
     break;
 
-  case 18: /* TYPE: KW_INT  */
-#line 128 "src/c_small.y"
-             {(yyval.tokentype) = yylval.tokentype;}
-#line 1266 "bin/c_small.tab.cpp"
+  case 29: /* TYPE: KW_INT  */
+#line 148 "src/c_small.y"
+             {(yyval.datatype) = yylval.datatype;}
+#line 1353 "bin/c_small.tab.cpp"
     break;
 
 
-#line 1270 "bin/c_small.tab.cpp"
+#line 1357 "bin/c_small.tab.cpp"
 
       default: break;
     }
@@ -1459,7 +1546,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 131 "src/c_small.y"
+#line 151 "src/c_small.y"
 
 
 Node *g_root;

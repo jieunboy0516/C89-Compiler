@@ -1,6 +1,6 @@
 %code requires{
   #include "../src/include/ast.hpp"
-  #include "../src/include/ast/tokens.hpp"
+  #include "../src/include/ast/types.hpp"
   #include <cassert>
   #include <string>
   #include <iostream>
@@ -21,7 +21,7 @@
   std::string* str;
   int num;
   double floatnum;
-  yytokentype tokentype;
+  DataType datatype;
 
   class FuncDef* FuncDefPtr;
   class StatList* StatListPtr;
@@ -31,6 +31,7 @@
   class DecList* DecListPtr;
   class ExternalDecList* ExternalDecListPtr;
   class CompoundStatement* CompoundStatPtr;
+  class WhileStatement* WhileStatPtr;
    
 }
 %type <FuncDefPtr> TOPLEVEL
@@ -39,12 +40,13 @@
 %type <CompoundStatPtr> COMPOUND_STATEMENT
 %type <StatListPtr> STATEMENT_LIST 
 %type <StatPtr> KW_RETURN
-%type <StatPtr> JUMP_STATEMENT IF_STATEMENT
+%type <StatPtr> JUMP_STATEMENT IF_STATEMENT ITERATION_STATEMENT
 %type <ExpPtr> EXPRESSION
 %type <ExpPtr> CONSTANT
-%type <tokentype> TYPE
+%type <datatype> TYPE
 %type <str> T_IDENTIFIER
 %type <DecPtr> DECLARATION
+%type <DecListPtr> DECLARATION_LIST
 
 
 // C89 Keywords: int, float, if, etc...
@@ -83,6 +85,8 @@ FUNCTION_DEF: TYPE T_IDENTIFIER T_LBRACKET T_RBRACKET COMPOUND_STATEMENT {$$ = n
             ;
 
 COMPOUND_STATEMENT: T_LCURLYBRACKET STATEMENT_LIST T_RCURLYBRACKET {$$ = new CompoundStatement(0,$2);  }
+                  | T_LCURLYBRACKET DECLARATION_LIST T_RCURLYBRACKET {$$ = new CompoundStatement($2,0);  }
+                  | T_LCURLYBRACKET DECLARATION_LIST STATEMENT_LIST T_RCURLYBRACKET {$$ = new CompoundStatement($2,$3);  }
                   ;
 
 //printf("Address of x is %p\n", (void *)$2); 
@@ -98,19 +102,35 @@ STATEMENT_LIST: STATEMENT {$$ = new StatList();
                            }
               ;
 
-STATEMENT: JUMP_STATEMENT {$$ = $1; }
+DECLARATION_LIST: DECLARATION {$$ = new DecList();
+                           $$->addToList($1);
+                                    std::cout << "start" << std::endl; Context test = Context(); std::cout << $$->codeprint(test) << std::endl;; std::cout << "done" << std::endl; 
+                          }
+              | DECLARATION_LIST DECLARATION {$1->addToList($2);
+                           $$ = $1;
+                                    std::cout << "start" << std::endl; Context test = Context(); std::cout << $$->codeprint(test) << std::endl;; std::cout << "done" << std::endl;  
+                           }
+              ;
+
+STATEMENT: COMPOUND_STATEMENT {$$ = $1;}  
+         | JUMP_STATEMENT {$$ = $1; }
          | IF_STATEMENT {$$ = $1;}
+         | ITERATION_STATEMENT {$$ = $1;}
         ;
 
-DECLARATION : 
-          TYPE T_IDENTIFIER T_SEMICOLON {$$ = new Declaration(*$1, *$2);}
-        | TYPE T_IDENTIFIER T_EQUALS EXPRESSION T_SEMICOLON {$$ = new Declaration(*$1, *$2, $4);}
-        ;
+DECLARATION : TYPE T_IDENTIFIER T_SEMICOLON {$$ = new Declaration($1, *$2, 0);}
+            | TYPE T_IDENTIFIER T_EQUALS EXPRESSION T_SEMICOLON {$$ = new Declaration($1, *$2, $4);}
+            ;
 
 
 JUMP_STATEMENT: KW_RETURN EXPRESSION T_SEMICOLON {$$ = new JumpStatement(*yylval.str, $2);
                                                   std::cout << "STATEMENT LOL" <<std::endl;}
               ;
+
+ITERATION_STATEMENT: KW_WHILE T_LBRACKET EXPRESSION T_RBRACKET STATEMENT {$$ = new WhileStatement($3, $5, false);}
+                   | KW_DO STATEMENT KW_WHILE T_LBRACKET EXPRESSION T_RBRACKET T_SEMICOLON {$$ = new WhileStatement($5, $2, true);}
+                   | 
+                   ;
 
 IF_STATEMENT: KW_IF T_LBRACKET EXPRESSION T_RBRACKET STATEMENT {$$ = new IfStatement($3, $5);}
             ;
@@ -125,7 +145,7 @@ CONSTANT: T_DECIMAL_CONST {$$ = new ConstantValue(std::stoi(*yylval.str));}
         ;
 
 
-TYPE: KW_INT {$$ = yylval.tokentype;}
+TYPE: KW_INT {$$ = yylval.datatype;}
     ;  
 
 %%

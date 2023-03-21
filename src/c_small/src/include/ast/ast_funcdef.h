@@ -7,15 +7,15 @@
 #include "ast_param.h"
 #include "ast_statement.h"
 #include "ast_statement_comound.h"
-#include "tokens.hpp"
+#include "types.hpp"
 
 class FuncDef : public Node {
 private:
-	yytokentype returnType;
+	DataType returnType;
 	std::string name;
 	CompoundStatement* cs;
 public:
-	FuncDef(yytokentype returnType_in, std::string& name_in, CompoundStatement* cs_in) :
+	FuncDef(DataType returnType_in, std::string& name_in, CompoundStatement* cs_in) :
 	returnType(returnType_in), name(name_in), cs(cs_in)
 	{};
 

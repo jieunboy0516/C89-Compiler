@@ -54,6 +54,40 @@ public:
 	}
 };
 
+class WhileStatement : public Statement {
+private:
+	Expression* e;
+	Statement* s;
+	bool DoWhile;
+public:
+	WhileStatement(Expression* e_in, Statement* s_in, bool DoWhile) : e(e_in), s(s_in), DoWhile(DoWhile) {};
 
+	std::string print() override{
+		std::stringstream ss;
+		return ss.str();
+	}
+
+	std::string cprint() override{
+		std::stringstream ss;
+		return ss.str();
+	}
+
+	std::string codeprint(Context& cont) override{
+		std::stringstream ss;
+		if(DoWhile){
+		ss << "Do: \n";
+		ss << s->codeprint(cont);
+		ss << "While: \n";
+		ss << e->codeprint(cont);
+		}
+		else{
+		ss << "While: \n";
+		ss << e->codeprint(cont);
+		ss << "Do: \n";
+		ss << s->codeprint(cont);
+		}
+		return ss.str();
+	}
+};
 
 #endif
