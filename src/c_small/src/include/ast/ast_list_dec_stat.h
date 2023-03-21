@@ -39,11 +39,6 @@ public:
 		return ss.str();
 	}
 
-	void addToList(Declarator* stat_in) {
-		dlist.push_back(stat_in);
-		return;
-	}
-
 };
 
 class StatList : public Node {

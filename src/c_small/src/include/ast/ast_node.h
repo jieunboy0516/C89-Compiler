@@ -16,9 +16,15 @@
 class Context {
 public:
 	int currentStackOffset;
+	int nextVariableLocation;
 	std::map <std::string, int> variableMap;
 	Context() {
 		currentStackOffset = 0;
+	}
+	// Function to return the next memory address available for a new variable
+	int getNewVariableAddress() {
+		currentStackOffset -= 4;
+		return currentStackOffset;
 	}
 };
 

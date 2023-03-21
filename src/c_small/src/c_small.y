@@ -93,23 +93,15 @@ COMPOUND_STATEMENT: T_LCURLYBRACKET STATEMENT_LIST T_RCURLYBRACKET {$$ = new Com
 //std::cout << "start" << std::endl; Context test = Context(); $$->codeprint(test); std::cout << "done" << std::endl;
 
 STATEMENT_LIST: STATEMENT {$$ = new StatList();
-                           $$->addToList($1);
-                                    std::cout << "start" << std::endl; Context test = Context(); std::cout << $$->codeprint(test) << std::endl;; std::cout << "done" << std::endl; 
-                          }
+                           $$->addToList($1);}
               | STATEMENT_LIST STATEMENT  {$1->addToList($2);
-                           $$ = $1;
-                                    std::cout << "start" << std::endl; Context test = Context(); std::cout << $$->codeprint(test) << std::endl;; std::cout << "done" << std::endl;  
-                           }
+                                          $$ = $1;}
               ;
 
 DECLARATION_LIST: DECLARATION {$$ = new DecList();
-                           $$->addToList($1);
-                                    std::cout << "start" << std::endl; Context test = Context(); std::cout << $$->codeprint(test) << std::endl;; std::cout << "done" << std::endl; 
-                          }
+                              $$->addToList($1);}
               | DECLARATION_LIST DECLARATION {$1->addToList($2);
-                           $$ = $1;
-                                    std::cout << "start" << std::endl; Context test = Context(); std::cout << $$->codeprint(test) << std::endl;; std::cout << "done" << std::endl;  
-                           }
+                                              $$ = $1;}
               ;
 
 STATEMENT: COMPOUND_STATEMENT {$$ = $1;}  
@@ -123,8 +115,7 @@ DECLARATION : TYPE T_IDENTIFIER T_SEMICOLON {$$ = new Declaration($1, *$2, 0);}
             ;
 
 
-JUMP_STATEMENT: KW_RETURN EXPRESSION T_SEMICOLON {$$ = new JumpStatement(*yylval.str, $2);
-                                                  std::cout << "STATEMENT LOL" <<std::endl;}
+JUMP_STATEMENT: KW_RETURN EXPRESSION T_SEMICOLON {$$ = new JumpStatement(*yylval.str, $2);}
               ;
 
 ITERATION_STATEMENT: KW_WHILE T_LBRACKET EXPRESSION T_RBRACKET STATEMENT {$$ = new WhileStatement($3, $5, false);}

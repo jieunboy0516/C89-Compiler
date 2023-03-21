@@ -28,7 +28,14 @@ Declarator::cprint() {
 Declarator::codeprint(Context& cont) {
 	if(e==NULL) {
 		std::stringstream ss;
-		ss << "new var declared\n";
+		cont.variableMap[id] = ;
+		ss << "li $t0, 0\n";
+		return ss.str();
+	}
+	else{
+		std::stringstream ss;
+		e->codeprint(cont);
+		ss << "sw $t0, " << cont.currentStackOffset << "("<< cont.variableMap[id] << ")" "\n";
 		return ss.str();
 	}
 }
