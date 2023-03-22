@@ -44,7 +44,7 @@
 %type <ExpPtr> EXPRESSION
 %type <ExpPtr> CONSTANT
 %type <datatype> TYPE
-%type <str> T_IDENTIFIER
+%type <str> IDENTIFIER
 %type <DecPtr> DECLARATION
 %type <DecListPtr> DECLARATION_LIST
 
@@ -81,7 +81,7 @@ TOPLEVEL: FUNCTION_DEF {$$ = $1;}
         | TOPLEVEL FUNCTION_DEF {$$ = $2;}
         ;
 
-FUNCTION_DEF: TYPE T_IDENTIFIER T_LBRACKET T_RBRACKET COMPOUND_STATEMENT {$$ = new FuncDef($1, *$2, $5);}
+FUNCTION_DEF: TYPE IDENTIFIER T_LBRACKET T_RBRACKET COMPOUND_STATEMENT {$$ = new FuncDef($1, *$2, $5);}
             ;
 
 COMPOUND_STATEMENT: T_LCURLYBRACKET STATEMENT_LIST T_RCURLYBRACKET {$$ = new CompoundStatement(0,$2);  }
@@ -110,8 +110,8 @@ STATEMENT: COMPOUND_STATEMENT {$$ = $1;}
          | ITERATION_STATEMENT {$$ = $1;}
         ;
 
-DECLARATION : TYPE T_IDENTIFIER T_SEMICOLON {$$ = new Declaration($1, *$2, 0);}
-            | TYPE T_IDENTIFIER T_EQUALS EXPRESSION T_SEMICOLON {$$ = new Declaration($1, *$2, $4);}
+DECLARATION : TYPE IDENTIFIER T_SEMICOLON {$$ = new Declarator($1, *$2, 0);}
+            | TYPE IDENTIFIER T_EQUALS EXPRESSION T_SEMICOLON {$$ = new Declarator($1, *$2, $4);}
             ;
 
 
@@ -120,7 +120,6 @@ JUMP_STATEMENT: KW_RETURN EXPRESSION T_SEMICOLON {$$ = new JumpStatement(*yylval
 
 ITERATION_STATEMENT: KW_WHILE T_LBRACKET EXPRESSION T_RBRACKET STATEMENT {$$ = new WhileStatement($3, $5, false);}
                    | KW_DO STATEMENT KW_WHILE T_LBRACKET EXPRESSION T_RBRACKET T_SEMICOLON {$$ = new WhileStatement($5, $2, true);}
-                   | 
                    ;
 
 IF_STATEMENT: KW_IF T_LBRACKET EXPRESSION T_RBRACKET STATEMENT {$$ = new IfStatement($3, $5);}
@@ -138,6 +137,9 @@ CONSTANT: T_DECIMAL_CONST {$$ = new ConstantValue(std::stoi(*yylval.str));}
 
 TYPE: KW_INT {$$ = yylval.datatype;}
     ;  
+
+IDENTIFIER: T_IDENTIFIER {$$ = yylval.str;}
+          ;
 
 %%
 

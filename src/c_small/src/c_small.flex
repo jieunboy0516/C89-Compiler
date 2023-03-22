@@ -91,7 +91,8 @@ return      { std::cout<<yytext<<std::endl; return KW_RETURN; }
                       yylval.str=strptr; return T_DECIMAL_CONST; }
 L?'[^\'\\\n]+'      { std::string* strptr = new std::string(yytext);
                       yylval.str=strptr;  return T_CHAR_CONST; }
-[A-z_][0-9A-z_]*    { std::string* strptr = new std::string(yytext);  return T_IDENTIFIER; }
+[A-z_][0-9A-z_]*    { std::string* strptr = new std::string(yytext);  
+                      yylval.str=strptr; return T_IDENTIFIER; }
 
 [ \t\r\n]+		{std::cout<<yytext<<std::endl;}
 

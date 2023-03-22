@@ -44,12 +44,9 @@ public:
 	Identifier(std::string name_in) : 
 	name(name_in)
 	{};
-
-	std::string codeprint(Context& cont) override{
-		std::stringstream ss;
-		ss << "using identifer " << name << "\n";
-		return ss.str();
-	}
+	std::string print();
+	std::string cprint();
+	std::string codeprint(Context& cont);
 	
 };
 
@@ -66,7 +63,9 @@ public:
 	left(left_in), op(op_in) , right(right_in)
 	{};
 
-
+	std::string print();
+	std::string cprint();
+	std::string codeprint(Context& cont);
 };
 
 

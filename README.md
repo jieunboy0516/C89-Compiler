@@ -5,10 +5,10 @@ The source of the compiler is in the `src/` directory and has been written in C+
 
 # Time management and schedule: 
 ## please visit [our detailed logbook](./time%20management/readme.md)
-- [ ] Lexer to tokenize a single source file
-- [ ] Parser for a single source file
-- [ ] Compiler for a single source file
-- [ ] Extend to multiple source files
+- [x] basic Lexer to tokenize a single source file
+- [x] basic Parser for a single source file
+- [x] basic Compiler for a single source file
+- [ ] build a slighly advanced compiler (if, while, for)
 
 # Personnel
 - [HURULD](https://github.com/HURULD)  - Harry Griffiths (hng21)

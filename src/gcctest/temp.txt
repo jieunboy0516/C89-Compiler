@@ -1,0 +1,12 @@
+g++ -Wall -c ./include/*.cpp -o ./bin
+
+
+g++ -Wall -g -o gcctest.o -C main.cpp ./include/*.cpp
+
+g++  -o gcctest *.o
+
+gcc includes.o main.cpp -o gcctest
+
+gcc ./*.o main.cpp -o gcctest
+
+rm ./*.o

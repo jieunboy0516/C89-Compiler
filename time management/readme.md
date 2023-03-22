@@ -3,15 +3,17 @@
 ## Detailed work log
 [Learning how lexer and parser works together](./understandlexerparser.md)
 [Making a compiler with simple features](./c_small.md)
+[Learning to compile multiple source files with GCC](./gcctest.md)
 
 <br>
 
 ## Milestones
 
-- [x] Lexer to tokenize a single source file 
-- [ ] Parser for a single source file
-- [ ] Compiler for a single source file
-- [ ] Extend to multiple source files
+- [x] basic Lexer to tokenize a single source file
+- [x] basic Parser for a single source file
+- [x] basic Compiler for a single source file
+- [ ] build a slighly advanced compiler (if, while, for)
+
 
 
 ## Expected Progess
@@ -22,6 +24,9 @@ Week of 6th March:
 
 
 Week of 13th March:
-- [x] Finishing off the Parser
-- [] Finishing off the Parser
+- [x] Finishing off the basic Parser (17th March)
+- [X] Work on the compiler  (17th March)
+
+Week of 13th March:
+- [x] Finishing off the basic Parser (22nd March)
 - [] Work on the compiler
