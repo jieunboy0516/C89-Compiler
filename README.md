@@ -1,5 +1,5 @@
 # Team042 Compilers Coursework 2023
-The source of the compiler is in the `src/` directory and has been written in C++ using Flex and Bison for the lexing and parsing stage
+The source of the compiler is in the `src/` directory and has been written in C++ using Flex and Bison for the lexing and parsing stage. Details of the compiler inlcuding AST nodes are in stored the `include` folder. 
 
 
 

@@ -45,7 +45,7 @@ int main(int argc, char **argv)
 
 
 
-    std::string sourcePath = "./bin/temp.txt";
+    std::string sourcePath = "temp.txt";
 
     Node *ast=parseAST(sourcePath);
     Context cont = Context();

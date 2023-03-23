@@ -7,6 +7,7 @@ extern "C" int fileno(FILE *stream);
 #include "../bin/c_parser.tab.hpp"
 #include <string>
 #include "../include/ast/types.hpp"
+#include <iostream>
 %}
 
 %%
