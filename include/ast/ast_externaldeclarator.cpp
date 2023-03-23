@@ -1,5 +1,6 @@
 #include "ast_externaldeclarator.h"
 #include "ast_funcdef.h"
+#include "ast_declarator.h"
 
 
 std::string ExternalDeclaration::print() 

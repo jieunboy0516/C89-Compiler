@@ -1,5 +1,8 @@
 #ifndef __STATEMENT__
 #define __STATEMENT__
+#include <string>
+#include "ast_expressions.h"
+#include "ast_node.h"
 
 class JumpStatement : public Statement { 
 private:

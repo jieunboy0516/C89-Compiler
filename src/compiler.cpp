@@ -33,10 +33,11 @@ int main(int argc, char **argv)
     // Open the output file in truncation mode (to overwrite the contents)
     std::ofstream output;
     output.open(outputPath, std::ios::trunc);
+    Context cont = Context();
 
     // Compile the input
     std::cout << "Compiling: " << sourcePath << std::endl;
-    compile(output);
+    output << ast->codeprint(cont);
     std::cout << "Compiled to: " << outputPath << std::endl;
 
     output.close();

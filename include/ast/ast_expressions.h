@@ -50,8 +50,6 @@ public:
 	
 };
 
-
-
 class BinaryExpression : public Expression { 
 private:
 	Expression* left;

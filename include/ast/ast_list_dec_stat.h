@@ -46,7 +46,7 @@ class ExternalDecList : public Node{
 private:
 	std::list<ExternalDeclaration*> exdeclist;
 public:
-	ExternalDecList(std::initializer_list<ExternalDeclaration*> list):	exdeclist(list) {};
+	ExternalDecList(){};
 	
 	void addToList(ExternalDeclaration *extDec_in)
 {

@@ -70,3 +70,6 @@ std::string InitializerList::codeprint(Context &cont){
 void InitializerList::addToList(Expression *exp){
 	elist.push_back(exp);
 }
+
+InitializerList::InitializerList(){
+}

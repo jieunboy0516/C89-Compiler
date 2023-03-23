@@ -33,8 +33,9 @@
   class CompoundStatement* CompoundStatPtr;
   class WhileStatement* WhileStatPtr;
   class InitializerList* InitListPtr;
+  class ExternalDeclaration* ExternalDecPtr;
 }
-%type <FuncDefPtr> TOPLEVEL
+%type <ExternalDecListPtr> TOPLEVEL
 %type <FuncDefPtr> FUNCTION_DEF
 %type <StatPtr> STATEMENT
 %type <CompoundStatPtr> COMPOUND_STATEMENT
@@ -47,6 +48,7 @@
 %type <str> IDENTIFIER
 %type <DecPtr> DECLARATION
 %type <DecListPtr> DECLARATION_LIST
+%type <ExternalDecPtr> EXTERNAL_DECLARATION
 
 
 // C89 Keywords: int, float, if, etc...
@@ -77,9 +79,15 @@
 ROOT: TOPLEVEL { g_root = $1;}
     ;
 
-TOPLEVEL: FUNCTION_DEF {$$ = $1;}
-        | TOPLEVEL FUNCTION_DEF {$$ = $2;}
+TOPLEVEL: EXTERNAL_DECLARATION {$$ = new ExternalDecList();
+                                $$->addToList($1);}
+        | TOPLEVEL EXTERNAL_DECLARATION  {$1->addToList($2);
+                                          $$ = $1;}
         ;
+
+EXTERNAL_DECLARATION: FUNCTION_DEF { $$ = new ExternalDeclaration($1);}
+                    | DECLARATION  { $$ = new ExternalDeclaration($1);}
+                    ;
 
 FUNCTION_DEF: TYPE IDENTIFIER T_LBRACKET T_RBRACKET COMPOUND_STATEMENT {$$ = new FuncDef($1, *$2, $5);}
             ;

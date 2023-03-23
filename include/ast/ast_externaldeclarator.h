@@ -1,8 +1,8 @@
 #pragma once
-#include "ast_declarator.h"
-
+#include "ast_node.h"
 
 class FuncDef;
+class Declarator;
 
 class ExternalDeclaration : public Node
 {
