@@ -1,4 +1,4 @@
-#include <cli.h>
+#include "../include/cli.h"
 
 int parse_command_line_args(int argc, char **argv, std::string &sourcePath, std::string &outputPath)
 {

@@ -2,8 +2,8 @@
 #include <iostream>
 #include <unistd.h>
 
-#include "cli.h"
-#include "ast.hpp"
+#include "../include/cli.h"
+#include "../include/ast.hpp"
 
 void compile(std::ostream &w)
 {
