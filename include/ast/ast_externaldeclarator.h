@@ -1,6 +1,5 @@
 #pragma once
 #include "ast_declarator.h"
-//#include "ast_funcdef.h"
 
 
 class FuncDef;

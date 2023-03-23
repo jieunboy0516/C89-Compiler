@@ -1,10 +1,28 @@
+
+#ifndef __STATEMENTCOMPOUND__
+#define __STATEMENTCOMPOUND__
+
+#include "ast_list_dec_stat.h"
+
+
 #include "ast_all.h"
+#include <iostream>
+
+class DecList;
+class StatList;
 
 class CompoundStatement : public Statement {
 private:
-	StatList* sl;
 	DecList* dl;
+	StatList* sl;
+
 public:
-	CompoundStatement(StatList* sl_in, DecList* dl_in) : sl(sl_in), dl(dl_in) {}
+	CompoundStatement(DecList* dl_in, StatList* sl_in ) : dl(dl_in), sl(sl_in) {}
+	std::string print();
+	std::string cprint();
+	std::string codeprint(Context& cont) ;
 
 };
+
+
+#endif

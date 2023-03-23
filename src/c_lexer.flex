@@ -4,13 +4,12 @@
 // Avoid error "error: `fileno' was not declared in this scope"
 extern "C" int fileno(FILE *stream);
 
-#include "c_parser.tab.hpp"
-
+#include "../bin/c_parser.tab.hpp"
+#include <string>
+#include "../include/ast/types.hpp"
 %}
 
 %%
-
-//C89 Operators
 
 [*]             { return T_TIMES; }
 [+]             { return T_PLUS; }
@@ -32,23 +31,17 @@ extern "C" int fileno(FILE *stream);
 [\=]            { return T_EQUALS;}
 [\#]            { return T_HASH; }
 
-//C89 Punctuators
-
-[(]             { return T_LBRACKET; }
-[)]             { return T_RBRACKET; }
-[\[]            { return T_LSQUAREBRACKET; }
-[\]]            { return T_RSQUAREBRACKET; }
-[\{]            { return T_LCURLYBRACKET;  }
-[\}]            { return T_RCURLYBRACKET;  }
-[\;]            { return T_SEMICOLON; }
 
 
-
-//C89 keywords 
-
+int         { std::string* strptr = new std::string(yytext); 
+              yylval.str=strptr;
+              yylval.datatype = INT;
+              return KW_INT; }
 auto        { return KW_AUTO; }
-double      { return KW_DOUBLE; }
-int         { return KW_INT; }
+double      { std::string* strptr = new std::string(yytext); 
+              yylval.str=strptr;
+              yylval.datatype = DOUBLE;
+              return KW_INT; return KW_DOUBLE; }
 struct      { return KW_STRUCT; }
 break       { return KW_BREAK; }
 else        { return KW_ELSE; }
@@ -58,9 +51,11 @@ case        { return KW_CASE; }
 enum        { return KW_ENUM; }
 register    { return KW_REGISTER; }
 typedef     { return KW_TYPEDEF; }
-char        { return KW_CHAR; }
+char        { std::string* strptr = new std::string(yytext); 
+              yylval.str=strptr;
+              yylval.datatype = CHAR;
+              return KW_CHAR; }
 extern      { return KW_EXTERN; }
-return      { return KW_RETURN; }
 union       { return KW_UNION; }
 const       { return KW_CONST; }
 for         { return KW_FOR; }
@@ -74,23 +69,30 @@ do          { return KW_DO; }
 if          { return KW_IF; }
 static      { return KW_STATIC; }
 while       { return KW_WHILE; }
-
-0[0-7]*             { yyval.string=yytext; return T_OCTAL_CONST; }
-0[xX][0-9a-fA-F]+   { yyval.string=yytext; return T_HEX_CONST; }
-[1-9][0-9]*         { yyval.string=yytext; return T_DECIMAL_CONST; }
-L?'[^\'\\\n]+'      { yyval.string=yytext; return T_CHAR_CONST; } //important: Multicharacter constants are valid but are yucky and might cause issues with implementation
-[A-z_][0-9A-z_]*    { yyval.string=yytext; return T_IDENTIFIER; }
+return      { return KW_RETURN; }
 
 
-[A-z_]   { yyval.string=yytext; return T_NONDIGIT; }
-[eE]     { return T_E; }
-[fF]     { return T_SUFFIX_F; }
-[lL]     { return T_SUFFIX_L; }
-[uU]     { return T_SUFFIX_U; }
+[\(]             { return T_LBRACKET; }
+[\)]             { return T_RBRACKET; }
+[\[]             { return T_LSQUAREBRACKET; }
+[\]]             { return T_RSQUAREBRACKET; }
+[\{]             { return T_LCURLYBRACKET;  }
+[\}]             { return T_RCURLYBRACKET;  }
+[\;]             { return T_SEMICOLON; }
 
 
+[+-]?0[0-7]*             { std::string* strptr = new std::string(yytext);
+                      yylval.str=strptr; return T_OCTAL_CONST; }
+[+-]?0[xX][0-9a-fA-F]+   {std::string* strptr = new std::string(yytext);
+                      yylval.str=strptr; return T_HEX_CONST; }
+[+-]?[1-9][0-9]*         { std::string* strptr = new std::string(yytext);
+                      yylval.str=strptr; return T_DECIMAL_CONST; }
+L?'[^\'\\\n]+'      { std::string* strptr = new std::string(yytext);
+                      yylval.str=strptr;  return T_CHAR_CONST; }
+[A-z_][0-9A-z_]*    { std::string* strptr = new std::string(yytext);  
+                      yylval.str=strptr; return T_IDENTIFIER; }
 
-[ \t\r\n]+		{;}
+[ \t\r\n]+		{}
 
 .               { fprintf(stderr, "Invalid token\n"); exit(1); }
 %%

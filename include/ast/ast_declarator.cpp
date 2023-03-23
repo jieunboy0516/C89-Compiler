@@ -1,35 +1,30 @@
-#include "ast_all.h"
+
+#include "ast_declarator.h"
+#include <iostream>
 
 
-Declarator::print() {
+std::string Declarator::print() {
 	std::stringstream ss;
-	ss << "DECL {" << "\n";
-	ss << type << "\n";
-	ss << id << "\n";
-	ss << "=" << "\n";
-	if(e!=NULL) {
-		ss << e->print() << "\n";
-	}
-	ss << "}" << "\n";
+	return ss.str();
+}
+std::string Declarator::cprint() {
+	std::stringstream ss;
+	return ss.str();
+}
+std::string Declarator::codeprint(Context& cont) {
+	std::stringstream ss;
 	return ss.str();
 }
 
-Declarator::cprint() {
-	
+std::string ArrayDeclarator::print() {
 	std::stringstream ss;
-	ss << type << " " << id << " ";
-	if(e!=NULL) {
-		ss << "= " << e->cprint();
-	}
-	ss << ";\n";
 	return ss.str();
 }
-Declarator::codeprint(Context& cont) {
-	if(e==NULL) {
-		std::stringstream ss;
-		ss << "addiu $sp, $sp, -4\n";
-		cont.variableMap[id] = cont.currentStackOffset;
-		cont.currentStackOffset++;
-		return ss.str();
-	}
+std::string ArrayDeclarator::cprint() {
+	std::stringstream ss;
+	return ss.str();
+}
+std::string ArrayDeclarator::codeprint(Context& cont) {
+	std::stringstream ss;
+	return ss.str();
 }

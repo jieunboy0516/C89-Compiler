@@ -1,6 +1,7 @@
 #ifndef __ALL_HEADERS__
 #define __ALL_HEADERS__
-#include "./ast_all.h"
+
+#include "./types.hpp"
 #include "./ast_declarator.h"
 #include "./ast_expressions.h"
 #include "./ast_funcdef.h"
