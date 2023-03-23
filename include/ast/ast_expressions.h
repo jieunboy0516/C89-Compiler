@@ -30,9 +30,16 @@ public:
 	}
 
 	std::string codeprint(Context& cont) override{
-		std::stringstream ss;
-		ss << "using constant value " << value<< "\n";
+		// std::stringstream ss;
+		// ss << "using constant value " << value<< "\n";
+
+	    std::stringstream ss;
+		ss << "li $0, " << value << "\n";
+		ss << "sw  $0, 0($sp)" << "\n";				// store the result to r0 
+		ss << "addiu $sp, $sp, -4\n";			
+		cont.currentStackOffset--;
 		return ss.str();
+
 	}
 	
 };

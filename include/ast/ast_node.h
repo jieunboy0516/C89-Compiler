@@ -27,6 +27,14 @@ public:
 
 };
 
+namespace Helper {
+	std::string pushStack(int reg, Context& cont) ;
+	std::string popStack(int reg, Context& cont) ;
+	std::string readVar(std::string name, Context& cont) ;
+	std::string writeVar(std::string name, Context& cont) ;
+	std::string writeNewVar(std::string name, Context& cont) ;
+}
+
 class Node
 {
 public:

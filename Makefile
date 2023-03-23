@@ -3,12 +3,11 @@ CPPFLAGS += -std=c++20 -W -Wall -g -I include
 .PHONY: default
 .PHONY: tree
 
-default: bin/c_compiler
+default: clean bin/c_compiler run_program
 
 bin/c_compiler : src/cli.cpp src/compiler.cpp tree
 	@mkdir -p bin
 	g++ $(CPPFLAGS) -o bin/c_compiler src/cli.cpp src/compiler.cpp bin/c_lexer.yy.o bin/c_parser.tab.o ./*.o
-	make clean
 
 tree: bin/c_parser.tab.o bin/c_lexer.yy.o
 	g++ -Wall -c ./include/ast/*.cpp 
@@ -26,4 +25,7 @@ bin/c_lexer.yy.cpp: src/c_lexer.flex
 	flex -o bin/c_lexer.yy.cpp src/c_lexer.flex
 
 clean:
-	rm -rf bin/* ./*.o 
+	rm -rf bin/*.o bin/*.cpp bin/*.hpp ./*.o 
+
+run_program:
+	./bin/c_compiler

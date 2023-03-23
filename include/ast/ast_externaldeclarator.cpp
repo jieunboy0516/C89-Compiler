@@ -11,10 +11,12 @@ std::string ExternalDeclaration::print()
 std::string ExternalDeclaration::cprint() 
 {
 	std::stringstream ss;
+	
 	return ss.str();
 }
 std::string ExternalDeclaration::codeprint(Context &cont)
 {
+	
 	if (d != NULL)
 	{
 		d->codeprint(cont);
@@ -22,5 +24,6 @@ std::string ExternalDeclaration::codeprint(Context &cont)
 	if (f != NULL)
 	{
 		f->codeprint(cont);
+		std::cout << f->codeprint(cont);
 	}
 }

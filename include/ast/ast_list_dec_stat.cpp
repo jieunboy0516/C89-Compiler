@@ -27,11 +27,9 @@ std::string DecList::cprint()
 std::string DecList::codeprint(Context &cont)
 {
 	std::stringstream ss;
-	for (std::list<Declarator *>::iterator it = dlist.begin(); it != dlist.end(); ++it)
-	{
-		if ((*it) != NULL)
-		{
-			ss << ((*it)->codeprint(cont));
+	for (std::list<Declarator*>::iterator it=dlist.begin(); it!=dlist.end(); ++it) {
+		if((*it)!=NULL) {
+			ss << ((*it)->codeprint(cont));   			
 		}
 	}
 	return ss.str();
@@ -53,15 +51,14 @@ std::string StatList::cprint()
 
 std::string StatList::codeprint(Context &cont)
 {
-	std::stringstream ss;
-	for (std::list<Statement *>::iterator it = slist.begin(); it != slist.end(); ++it)
-	{
-		if ((*it) != NULL)
-		{
-			ss << ((*it)->codeprint(cont));
+		std::stringstream ss;
+		for (std::list<Statement*>::iterator it=slist.begin(); it!=slist.end(); ++it) {
+    		if((*it)!=NULL) {
+    			//std::cerr << "STAT2" << std::endl;
+				ss << ((*it)->codeprint(cont)); 
+    		}
 		}
-	}
-	return ss.str();
+		return ss.str();
 }
 
 
@@ -84,7 +81,14 @@ std::string ExternalDecList::cprint()
 
 std::string ExternalDecList::codeprint(Context &cont)
 {
-	std::stringstream ss;
+		std::stringstream ss;
+		for (std::list<ExternalDeclaration*>::iterator it=exdeclist.begin(); it!=exdeclist.end(); ++it) {
+    		if((*it)!=NULL) {
+    			//std::cerr << "STAT2" << std::endl;
+				ss << ((*it)->codeprint(cont)); 
+				
 
-	return ss.str();
+    		}
+		}
+		return ss.str();
 }

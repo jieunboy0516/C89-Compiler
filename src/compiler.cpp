@@ -20,26 +20,45 @@ void compile(std::ostream &w)
 
 int main(int argc, char **argv)
 {
-    // Parse CLI arguments, to fetch the values of the source and output files.
-    std::string sourcePath = "";
-    std::string outputPath = "";
-    if (parse_command_line_args(argc, argv, sourcePath, outputPath))
-    {
-        return 1;
-    }
+    // // Parse CLI arguments, to fetch the values of the source and output files.
+    // std::string sourcePath = "";
+    // std::string outputPath = "";
+    // if (parse_command_line_args(argc, argv, sourcePath, outputPath))
+    // {
+    //     return 1;
+    // }
+
+    // Node *ast=parseAST(sourcePath);
+
+    // // Open the output file in truncation mode (to overwrite the contents)
+    // std::ofstream output;
+    // output.open(outputPath, std::ios::trunc);
+    // Context cont = Context();
+
+    // // Compile the input
+    // std::cout << "Compiling: " << sourcePath << std::endl;
+    // output << ast->codeprint(cont);
+    // std::cout << "Compiled to: " << outputPath << std::endl;
+
+    // output.close();
+    // return 0;
+
+
+
+    std::string sourcePath = "./bin/temp.txt";
 
     Node *ast=parseAST(sourcePath);
-
-    // Open the output file in truncation mode (to overwrite the contents)
-    std::ofstream output;
-    output.open(outputPath, std::ios::trunc);
     Context cont = Context();
+
 
     // Compile the input
     std::cout << "Compiling: " << sourcePath << std::endl;
-    output << ast->codeprint(cont);
-    std::cout << "Compiled to: " << outputPath << std::endl;
-
-    output.close();
+    std::cout  << ast->codeprint(cont);
+    //printf("Address of x is %p\n", (void *)ast);  
     return 0;
+
+
+
+
+
 }

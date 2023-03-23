@@ -4,7 +4,7 @@
 #include "ast_expressions.h"
 #include "ast_node.h"
 
-class JumpStatement : public Statement { 
+class JumpStatement : public Statement { 	//return statement
 private:
 	Expression* e;
 	std::string kw;
@@ -25,8 +25,9 @@ public:
 
 	std::string codeprint(Context& cont) override{
 		std::stringstream ss;
-        ss << "jumping to: \n";
-        ss << e->codeprint(cont);
+        //ss << "jumping to: \n";
+        ss << e->codeprint(cont);	// the expression result in r0
+		ss << "ret $0\n";	
 		return ss.str();
 	}
 

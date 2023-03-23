@@ -74,6 +74,8 @@
 
 %start ROOT
 
+
+//std::cout << "IM HERE: " <<std::endl;
 %%
 
 ROOT: TOPLEVEL { g_root = $1;}
@@ -85,11 +87,11 @@ TOPLEVEL: EXTERNAL_DECLARATION {$$ = new ExternalDecList();
                                           $$ = $1;}
         ;
 
-EXTERNAL_DECLARATION: FUNCTION_DEF { $$ = new ExternalDeclaration($1);}
+EXTERNAL_DECLARATION: FUNCTION_DEF { $$ = new ExternalDeclaration($1);  }   
                     | DECLARATION  { $$ = new ExternalDeclaration($1);}
                     ;
 
-FUNCTION_DEF: TYPE IDENTIFIER T_LBRACKET T_RBRACKET COMPOUND_STATEMENT {$$ = new FuncDef($1, *$2, $5);}
+FUNCTION_DEF: TYPE IDENTIFIER T_LBRACKET T_RBRACKET COMPOUND_STATEMENT {$$ = new FuncDef($1, *$2, $5); }
             ;
 
 COMPOUND_STATEMENT: T_LCURLYBRACKET STATEMENT_LIST T_RCURLYBRACKET {$$ = new CompoundStatement(0,$2);  }
@@ -127,7 +129,7 @@ DECLARATION : TYPE IDENTIFIER T_SEMICOLON {$$ = new Declarator($1, *$2, 0);}
 
 
 
-JUMP_STATEMENT: KW_RETURN EXPRESSION T_SEMICOLON {$$ = new JumpStatement(*yylval.str, $2);}
+JUMP_STATEMENT: KW_RETURN EXPRESSION T_SEMICOLON {std::string* strptr = new std::string("ret"); $$ = new JumpStatement(*strptr, $2);}
               ;
 
 ITERATION_STATEMENT: KW_WHILE T_LBRACKET EXPRESSION T_RBRACKET STATEMENT {$$ = new WhileStatement($3, $5, false);}
