@@ -11,6 +11,9 @@ The source of the compiler is in the `src/` directory and has been written in C+
 - [ ] build a slighly advanced compiler (if, while, for)
 
 # Personnel
+
+### Disclaimer: we work together via live code share on VSCODE so the numbers of commits are imbalanced.
+
 - [HURULD](https://github.com/HURULD)  - Harry Griffiths (hng21)
 - [jieunboy0516](https://github.com/jieunboy0516) - Samsam Lee (scl21)
 

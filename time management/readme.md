@@ -4,7 +4,7 @@
 [Learning how lexer and parser works together](./understandlexerparser.md)
 [Making a compiler with simple features](./c_small.md)
 [Learning to compile multiple source files with GCC](./gcctest.md)
-
+[Our method to implement stack](./function_compilation.md)
 <br>
 
 ## Milestones
@@ -27,6 +27,8 @@ Week of 13th March:
 - [x] Finishing off the basic Parser (17th March)
 - [X] Work on the compiler  (17th March)
 
-Week of 13th March:
+Week of 20th March:
 - [x] Finishing off the basic Parser (22nd March)
-- [] Work on the compiler
+- [x] Work on the compiler  (22nd March)
+- [x] Passed 9 test cases   (24th March)
+
