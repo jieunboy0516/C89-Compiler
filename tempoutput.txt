@@ -3,25 +3,9 @@
 
 f:
 addi sp, sp, -4
-#declaring y
-addi sp, sp, -4
-#finish declaring 
-#declaring x[8]
-addi sp, sp, -4
-#finish declaring 
-li a0, 13
-
-# y = -5
-#WriteVar y
-sw s0, 12(sp)
-# y = -5
-# current stack offset = -7
-#ReadVar name
-lw a0, 12(sp)
+li a0, 5
 #exiting scope 
-#x[8] => -6
-#y => -5
-addi sp, sp,8
+addi sp, sp,0
 #done exiting scope 
 addi sp, sp, 4
 ret

@@ -20,7 +20,7 @@ void compile(std::ostream &w)
 
 int main(int argc, char **argv)
 {
-    bool debugging = false;
+    bool debugging = true;
 
     if (!debugging)
     {
