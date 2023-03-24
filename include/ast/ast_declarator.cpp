@@ -1,5 +1,6 @@
 
 #include "ast_declarator.h"
+#include "ast_expressions.h"
 #include <iostream>
 
 
@@ -43,19 +44,25 @@ std::string ArrayDeclarator::cprint() {
 }
 
 
-
-//// NOT DONE FIX ME
-//TODO: fix this
 std::string ArrayDeclarator::codeprint(Context& cont) {
 	std::stringstream ss;
 	ss << "#declaring " << "\n";
 
-	//stack pointer is already pointing to a blank space
 
-	//evaluate expression if have
-	if(e != NULL) ss << e->codeprint(cont); // result in a0
-	//prepare the stack
+    // Run through each variable in teh array and declare it seperately keeping each name unique
+    if(size != NULL && e != NULL) {
+        for(int i = 0; i < ((ConstantValue*)size)->getValue(); i++){
+            ss << "li a0, " << ((ConstantValue*)e->getExpression(i))->getValue() << "\n";
+            ss << Helper::writeNewVar(id+"["+std::to_string(i)+"]",cont);
 
+        }
+    }
+    else if(e != NULL){
+        for(int i = 0; i < e->getSize(); i++){
+            ss << "li a0, " << ((ConstantValue*)e->getExpression(i))->getValue() << "\n";
+            ss << Helper::writeNewVar(id+"["+std::to_string(i)+"]",cont);
+        }
+    }
 
 	//write a0 to the stack and prepare stack for next push
 	Helper::writeNewVar(id,cont);

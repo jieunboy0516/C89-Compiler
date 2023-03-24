@@ -4,6 +4,7 @@
 #include <iostream>
 #include "ast_node.h"
 
+
 std::string Identifier::cprint() {
 	std::stringstream ss;
 	ss << name;
@@ -124,6 +125,9 @@ std::string InitializerList::codeprint(Context &cont){
 void InitializerList::addToList(Expression *exp){
 	elist.push_back(exp);
 }
+Expression* InitializerList::getExpression(int index){
+    return elist[index];
+}
 
 InitializerList::InitializerList(){
 }
@@ -198,6 +202,40 @@ std::string AssignmentExpression::codeprint(Context &cont) {
 
 	return ss.str();
 }
+
+std::string ArrayAssignmentExpression::print() {
+    std::stringstream ss;
+
+    return ss.str();
+}
+
+std::string ArrayAssignmentExpression::cprint() {
+    std::stringstream ss;
+
+    return ss.str();
+}
+
+std::string ArrayAssignmentExpression::codeprint(Context &cont) {
+    std::stringstream ss;
+
+
+    int idx = ((ConstantValue*)index)->getValue();
+    ss << assignmentexpr->codeprint(cont) << "\n";	//get assignmentexpr into a0
+    switch(op){
+        case EQUAL:
+            //Write over the variable with the same index
+            ss << Helper::writeVar(name + "[" + std::to_string(idx) + "]",cont);
+            break;
+        case PLUS:
+            ss << "mv a1, a0\n"; //move the assignment value into a1
+            ss << Helper::readVar(name + "[" + std::to_string(idx) + "]",cont,1);
+            ss << "add a0, a0, a1 \n"; //Add into a0
+            ss << Helper::writeVar(name + "[" + std::to_string(idx) + "]",cont);
+            break;
+    }
+    return ss.str();
+}
+
 
 std::string RelationalExpression::print() {
     std::stringstream ss;
