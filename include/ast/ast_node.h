@@ -33,6 +33,7 @@ namespace Helper {
 	std::string readVar(std::string name, Context& cont,int targetreg);
 	std::string writeVar(std::string name, Context& cont) ;
 	std::string writeNewVar(std::string name, Context& cont) ;
+    std::string getUniqueLabel(Context& cont);
 
 	//create a new variable map for the new scope & increase the scopeindex
 	void enterNewScope(Context& cont);

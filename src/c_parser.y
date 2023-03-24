@@ -38,7 +38,7 @@
 %type <FuncDefPtr> FUNCTION_DEF
 %type <StatPtr> STATEMENT
 %type <CompoundStatPtr> COMPOUND_STATEMENT
-%type <StatListPtr> STATEMENT_LIST 
+%type <StatListPtr> STATEMENT_LIST
 %type <StatPtr> KW_RETURN
 %type <StatPtr> JUMP_STATEMENT IF_STATEMENT ITERATION_STATEMENT
 %type <ExpPtr> EXPRESSION CONSTANT INITIALIZER TERM FACTOR UNARY ASSIGNMENT_EXPRESSION
@@ -51,14 +51,14 @@
 
 
 // C89 Keywords: int, float, if, etc...
-%token KW_AUTO KW_DOUBLE KW_INT KW_STRUCT KW_BREAK KW_ELSE KW_LONG KW_SWITCH KW_CASE KW_ENUM KW_REGISTER KW_TYPEDEF KW_CHAR KW_EXTERN KW_RETURN 
+%token KW_AUTO KW_DOUBLE KW_INT KW_STRUCT KW_BREAK KW_ELSE KW_LONG KW_SWITCH KW_CASE KW_ENUM KW_REGISTER KW_TYPEDEF KW_CHAR KW_EXTERN KW_RETURN
 %token KW_UNION KW_CONST KW_FOR KW_SIGNED KW_VOID KW_DEFUALT KW_GOTO KW_SIZEOF KW_VOLATILE KW_DO KW_IF KW_STATIC KW_WHILE
 
 
 // C89 constant operators
 
 %token T_LSQUAREBRACKET T_RSQUAREBRACKET T_LBRACKET T_RBRACKET T_LCURLYBRACKET T_RCURLYBRACKET;
-%token T_PERIOD T_HYPHON T_EXCLAIM T_EXPONENT T_QUESTION T_COMMA T_SEMICOLON T_LESSTHAN T_GREATERTHAN T_AND T_PERCENT T_PLUS T_MINUS T_TIMES T_DIVIDE T_TILDE 
+%token T_PERIOD T_HYPHON T_EXCLAIM T_EXPONENT T_QUESTION T_COMMA T_SEMICOLON T_LESSTHAN T_GREATERTHAN T_AND T_PERCENT T_PLUS T_MINUS T_TIMES T_DIVIDE T_TILDE
 %token T_COLON T_VERTICALBAR T_EQUALS T_HASH
 %token T_NUMBER
 
@@ -86,7 +86,7 @@ TOPLEVEL: EXTERNAL_DECLARATION {$$ = new ExternalDecList();
                                           $$ = $1;}
         ;
 
-EXTERNAL_DECLARATION: FUNCTION_DEF { $$ = new ExternalDeclaration($1);  }   
+EXTERNAL_DECLARATION: FUNCTION_DEF { $$ = new ExternalDeclaration($1);  }
                     | DECLARATION  { $$ = new ExternalDeclaration($1);}
                     ;
 
@@ -98,7 +98,7 @@ COMPOUND_STATEMENT: T_LCURLYBRACKET STATEMENT_LIST T_RCURLYBRACKET {$$ = new Com
                   | T_LCURLYBRACKET DECLARATION_LIST STATEMENT_LIST T_RCURLYBRACKET {$$ = new CompoundStatement($2,$3);  }
                   ;
 
-//printf("Address of x is %p\n", (void *)$2); 
+//printf("Address of x is %p\n", (void *)$2);
 //std::cout << "start" << std::endl; Context test = Context(); $$->codeprint(test); std::cout << "done" << std::endl;
 
 STATEMENT_LIST: STATEMENT {$$ = new StatList();
@@ -113,7 +113,7 @@ DECLARATION_LIST: DECLARATION {$$ = new DecList();
                                               $$ = $1;}
               ;
 
-STATEMENT: COMPOUND_STATEMENT {$$ = $1;}  
+STATEMENT: COMPOUND_STATEMENT {$$ = $1;}
          | JUMP_STATEMENT {$$ = $1; }
          | IF_STATEMENT {$$ = $1;}
          | ITERATION_STATEMENT {$$ = $1;}
@@ -135,7 +135,8 @@ ITERATION_STATEMENT: KW_WHILE T_LBRACKET EXPRESSION T_RBRACKET STATEMENT {$$ = n
                    | KW_DO STATEMENT KW_WHILE T_LBRACKET EXPRESSION T_RBRACKET T_SEMICOLON {$$ = new WhileStatement($5, $2, true);}
                    ;
 
-IF_STATEMENT: KW_IF T_LBRACKET EXPRESSION T_RBRACKET STATEMENT {$$ = new IfStatement($3, $5);}
+IF_STATEMENT: KW_IF T_LBRACKET EXPRESSION T_RBRACKET STATEMENT {$$ = new IfStatement($3, $5, 0, false);}
+            | KW_IF T_LBRACKET EXPRESSION T_RBRACKET STATEMENT KW_ELSE STATEMENT {$$ = new IfStatement($3, $5, $7, true);}
             ;
 
 INITIALIZER: EXPRESSION {$$ = $1;}
@@ -156,28 +157,37 @@ ASSIGNMENT_EXPRESSION:  IDENTIFIER T_EQUALS EXPRESSION T_SEMICOLON {$$ = new Ass
 EXPRESSION: TERM                          { $$ = $1; }
           | EXPRESSION T_PLUS EXPRESSION  { $$ = new BinaryExpression($1,PLUS, $3); }
           | EXPRESSION T_MINUS EXPRESSION { $$ = new BinaryExpression($1,MINUS, $3); }
+          | EXPRESSION T_EQUALS T_EQUALS EXPRESSION { $$ = new RelationalExpression($1,EQUALTO, $4); }
+          | EXPRESSION T_EXCLAIM T_EQUALS EXPRESSION { $$ = new RelationalExpression($1,NOTEQUALTO, $4); }
+          | EXPRESSION T_LESSTHAN EXPRESSION { $$ = new RelationalExpression($1,LESSTHAN, $3); }
+          | EXPRESSION T_GREATERTHAN EXPRESSION { $$ = new RelationalExpression($1,GREATERTHAN, $3); }
+          | EXPRESSION T_LESSTHAN T_EQUALS EXPRESSION { $$ = new RelationalExpression($1,LESSTHANEQUALTO, $4); }
+          | EXPRESSION T_GREATERTHAN T_EQUALS EXPRESSION { $$ = new RelationalExpression($1,GREATERTHANEQUALTO, $4); }
+          ;
+
+
 
 TERM : UNARY               { $$ = $1; }
      | TERM T_TIMES TERM   { $$ = new BinaryExpression($1, TIMES ,$3); }
      | TERM T_DIVIDE TERM  { $$ = new BinaryExpression($1, TIMES ,$3); }
 
 UNARY : FACTOR                { $$ = $1; }
-      | T_MINUS EXPRESSION    { $$ = new UnaryExpression(MINUS, $2); } 
+      | T_MINUS EXPRESSION    { $$ = new UnaryExpression(MINUS, $2); }
 
 FACTOR  : CONSTANT {$$ = $1;}
-        | IDENTIFIER { $$ = new Identifier(*$1); } 
+        | IDENTIFIER { $$ = new Identifier(*$1); }
         | T_LBRACKET EXPRESSION T_RBRACKET { $$ = $2; }
         ;
 
 CONSTANT: T_DECIMAL_CONST {$$ = new ConstantValue(std::stoi(*yylval.str));}
-        | T_OCTAL_CONST {$$ = new ConstantValue(std::stoi(*yylval.str, 0, 8));} 
+        | T_OCTAL_CONST {$$ = new ConstantValue(std::stoi(*yylval.str, 0, 8));}
         | T_HEX_CONST  {$$ = new ConstantValue(std::stoi(*yylval.str, 0 , 16));}
         | T_CHAR_CONST {$$ = new ConstantValue((int)(*yylval.str)[0]);}
         ;
 
 
 TYPE: KW_INT {$$ = yylval.datatype;}
-    ;  
+    ;
 
 IDENTIFIER: T_IDENTIFIER {$$ = yylval.str;}
           ;

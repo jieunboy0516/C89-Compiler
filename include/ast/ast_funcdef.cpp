@@ -26,9 +26,9 @@ std::string FuncDef::codeprint(Context& cont) {
 	//ss << "li sp, " << cont.currentStackOffset << "\n";
 
 
-	//push all registers onto stack 
+	//push all registers onto stack
 	for(int i = 4; i <= 7; i++) {
-		Helper::pushStack(i,cont);
+		ss << Helper::pushStack(i,cont);
 	}
 
 	//int stackoffetbefore = cont.currentStackOffset;
@@ -43,9 +43,9 @@ std::string FuncDef::codeprint(Context& cont) {
 	ss << cs->codeprint(cont);
 	//exit new scope in Jumpstatement(return)
 
-	//pop all registers on stack back into the registers 
+	//pop all registers on stack back into the registers
 	for(int i = 7; i >= 4; i--) {
-		Helper::popStack(i,cont);
+		ss << Helper::popStack(i,cont);
 	}
 
 
@@ -55,7 +55,7 @@ std::string FuncDef::codeprint(Context& cont) {
 	return ss.str();
 
 	// 	std::stringstream ss;
-	// ss << ".text\n" << ".align 2\n";	
+	// ss << ".text\n" << ".align 2\n";
 	// ss << ".globl  " << name << "\n";
 	// ss << ".ent  " << name << "\n";
 	// ss << ".type  " << name << ", @function" << "\n";

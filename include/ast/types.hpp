@@ -39,3 +39,14 @@
     EQUAL
   };
 #endif
+#ifndef COMPARATORS
+#define COMPARATORS
+  enum Comparator{
+    EQUALTO,
+    NOTEQUALTO,
+    LESSTHAN,
+    GREATERTHAN,
+    LESSTHANEQUALTO,
+    GREATERTHANEQUALTO
+  };
+#endif

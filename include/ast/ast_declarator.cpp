@@ -16,7 +16,7 @@ std::string Declarator::codeprint(Context& cont) {
 	std::stringstream ss;
 	ss << "#declaring " << id << "\n";
 
-	//stack pointer is already pointing to a blank space 
+	//stack pointer is already pointing to a blank space
 
 	//evaluate expression if have
 	if(e != NULL) ss << e->codeprint(cont); // result in a0
@@ -24,13 +24,13 @@ std::string Declarator::codeprint(Context& cont) {
 	ss << "addi sp, sp, -4\n";
 
 	//write a0 to the stack and prepare stack for next push
-	Helper::writeNewVar(id,cont);
+	ss << Helper::writeNewVar(id,cont);
 
 	ss << "#finish declaring " << "\n";
 
 
 	return ss.str();
-	
+
 }
 
 std::string ArrayDeclarator::print() {
@@ -48,19 +48,19 @@ std::string ArrayDeclarator::cprint() {
 //TODO: fix this
 std::string ArrayDeclarator::codeprint(Context& cont) {
 	std::stringstream ss;
-	// ss << "#declaring " << "\n";
+	ss << "#declaring " << "\n";
 
-	// //stack pointer is already pointing to a blank space 
+	//stack pointer is already pointing to a blank space
 
-	// //evaluate expression if have
-	// if(e != NULL) ss << e->codeprint(cont); // result in a0
-	// //prepare the stack
-	// ss << "addi sp, sp, -4\n";
+	//evaluate expression if have
+	if(e != NULL) ss << e->codeprint(cont); // result in a0
+	//prepare the stack
 
-	// //write a0 to the stack and prepare stack for next push
-	// Helper::writeNewVar(id,cont);
 
-	// ss << "#finish declaring " << "\n";
+	//write a0 to the stack and prepare stack for next push
+	Helper::writeNewVar(id,cont);
+
+	ss << "#finish declaring " << "\n";
 
 
 	return ss.str();

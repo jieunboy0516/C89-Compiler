@@ -18,6 +18,7 @@ std::string CompoundStatement::cprint()
 std::string CompoundStatement::codeprint(Context &cont)
 {
     std::stringstream ss;
+    Helper::enterNewScope(cont);
     if (dl != NULL)
     {
         ss << dl->codeprint(cont);
