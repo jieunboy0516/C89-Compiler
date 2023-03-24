@@ -1,6 +1,6 @@
 #include "ast_funcdef.h"
 #include "ast_statement_comound.h"
-
+#include "ast_node.h"
 
 std::string FuncDef::print() {
 		std::stringstream ss;
@@ -18,12 +18,37 @@ std::string FuncDef::cprint(){
 std::string FuncDef::codeprint(Context& cont) {
 
 	std::stringstream ss;
-	Context funcContext = Context();
-	ss << "li $fp, " << cont.currentStackOffset << "\n";
+
+	ss << "li fp, " << cont.currentStackOffset << "\n";
 	ss << name << ":" << "\n";
-	funcContext.currentStackOffset = cont.getNewVariableAddress(); //Set new stack offset to the end of the previous stack.
-	ss << "li $sp, " << funcContext.currentStackOffset << "\n";
-	ss << cs->codeprint(funcContext);
+	//funcContext.currentStackOffset = 0;
+	Helper::enterNewScope(cont);
+	ss << "li sp, " << cont.currentStackOffset << "\n";
+
+
+	//push all registers onto stack 
+	for(int i = 4; i <= 7; i++) {
+		Helper::pushStack(i,cont);
+	}
+
+	int stackoffetbefore = cont.currentStackOffset;
+
+	//prepare the stack pointer for next push
+	ss << "addi sp, sp, -4\n";
+	cont.currentStackOffset--;
+	ss << cs->codeprint(cont);
+
+	//restoring the stack pointer
+	int bytediff = (cont.currentStackOffset - stackoffetbefore)* 4;	//even the 4 bytes for stack preparation are removed
+	ss << "addi sp, sp, " << bytediff <<"\n";
+
+	//pop all registers on stack back into the registers 
+	for(int i = 7; i >= 4; i--) {
+		Helper::popStack(i,cont);
+	}
+
+
+
 	// std::cout << "IM HERE1" <<std::endl;
 	// std::cout << ss.str() <<std::endl;
 	return ss.str();

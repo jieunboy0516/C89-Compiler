@@ -2,8 +2,8 @@
   #include "../include/ast.hpp"
   #include "../include/ast/types.hpp"
   #include <cassert>
-  #include <string>
   #include <iostream>
+  #include <string>
 
   extern Node *g_root; // A way of getting the AST out
   extern FILE *yyin;
@@ -31,7 +31,6 @@
   class DecList* DecListPtr;
   class ExternalDecList* ExternalDecListPtr;
   class CompoundStatement* CompoundStatPtr;
-  class WhileStatement* WhileStatPtr;
   class InitializerList* InitListPtr;
   class ExternalDeclaration* ExternalDecPtr;
 }
@@ -42,7 +41,7 @@
 %type <StatListPtr> STATEMENT_LIST 
 %type <StatPtr> KW_RETURN
 %type <StatPtr> JUMP_STATEMENT IF_STATEMENT ITERATION_STATEMENT
-%type <ExpPtr> EXPRESSION CONSTANT INITIALIZER 
+%type <ExpPtr> EXPRESSION CONSTANT INITIALIZER TERM FACTOR UNARY 
 %type <InitListPtr> INITIALIZER_LIST
 %type <datatype> TYPE
 %type <str> IDENTIFIER
@@ -121,12 +120,11 @@ STATEMENT: COMPOUND_STATEMENT {$$ = $1;}
         ;
 
 DECLARATION : TYPE IDENTIFIER T_SEMICOLON {$$ = new Declarator($1, *$2, 0);}
-            | TYPE T_LSQUAREBRACKET CONSTANT T_RSQUAREBRACKET IDENTIFIER T_SEMICOLON {$$ = new ArrayDeclarator($1, *$5, 0, $3);}
+            | TYPE IDENTIFIER T_LSQUAREBRACKET CONSTANT T_RSQUAREBRACKET T_SEMICOLON {$$ = new ArrayDeclarator($1, *$2, 0, $4);}
             | TYPE IDENTIFIER T_EQUALS INITIALIZER T_SEMICOLON {$$ = new Declarator($1, *$2, $4);}
-            | TYPE T_LSQUAREBRACKET T_RSQUAREBRACKET IDENTIFIER T_EQUALS INITIALIZER T_SEMICOLON {$$ = new ArrayDeclarator($1, *$4, $6, 0);}
-            | TYPE T_LSQUAREBRACKET CONSTANT T_RSQUAREBRACKET IDENTIFIER T_EQUALS INITIALIZER T_SEMICOLON {$$ = new ArrayDeclarator($1, *$5, $7,$3);}
+            | TYPE IDENTIFIER T_LSQUAREBRACKET T_RSQUAREBRACKET T_EQUALS INITIALIZER T_SEMICOLON {$$ = new ArrayDeclarator($1, *$2, $6, 0);}
+            | TYPE IDENTIFIER T_LSQUAREBRACKET CONSTANT T_RSQUAREBRACKET T_EQUALS INITIALIZER T_SEMICOLON {$$ = new ArrayDeclarator($1, *$2, $7,$4);}
             ;
-
 
 
 JUMP_STATEMENT: KW_RETURN EXPRESSION T_SEMICOLON {std::string* strptr = new std::string("ret"); $$ = new JumpStatement(*strptr, $2);}
@@ -149,8 +147,21 @@ INITIALIZER_LIST: INITIALIZER {$$ = new InitializerList();
                                                         $$ = $1;}
                 ;
 
-EXPRESSION: CONSTANT {$$ = $1;}
-          ;
+EXPRESSION: TERM                          { $$ = $1; }
+          | EXPRESSION T_PLUS EXPRESSION  { $$ = new BinaryExpression($1,PLUS, $3); }
+          | EXPRESSION T_MINUS EXPRESSION { $$ = new BinaryExpression($1,MINUS, $3); }
+
+TERM : UNARY               { $$ = $1; }
+     | TERM T_TIMES TERM   { $$ = new BinaryExpression($1, TIMES ,$3); }
+     | TERM T_DIVIDE TERM  { $$ = new BinaryExpression($1, TIMES ,$3); }
+
+UNARY : FACTOR                { $$ = $1; }
+      | T_MINUS EXPRESSION    { $$ = new UnaryExpression(MINUS, $2); } 
+
+FACTOR  : CONSTANT {$$ = $1;}
+        | IDENTIFIER { $$ = new Identifier(*$1); } 
+        | T_LBRACKET EXPRESSION T_RBRACKET { $$ = $2; }
+        ;
 
 CONSTANT: T_DECIMAL_CONST {$$ = new ConstantValue(std::stoi(*yylval.str));}
         | T_OCTAL_CONST {$$ = new ConstantValue(std::stoi(*yylval.str, 0, 8));} 

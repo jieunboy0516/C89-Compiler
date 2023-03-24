@@ -82,12 +82,10 @@ std::string ExternalDecList::cprint()
 std::string ExternalDecList::codeprint(Context &cont)
 {
 		std::stringstream ss;
-		for (std::list<ExternalDeclaration*>::iterator it=exdeclist.begin(); it!=exdeclist.end(); ++it) {
-    		if((*it)!=NULL) {
+		for (auto ed : exdeclist) {
+    		if(ed!=NULL) {
     			//std::cerr << "STAT2" << std::endl;
-				ss << ((*it)->codeprint(cont)); 
-				
-
+				ss << (ed->codeprint(cont)); 
     		}
 		}
 		return ss.str();

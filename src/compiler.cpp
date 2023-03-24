@@ -45,14 +45,14 @@ int main(int argc, char **argv)
 
 
 
-    std::string sourcePath = "temp.txt";
+    std::string sourcePath = "./temp.txt";
 
     Node *ast=parseAST(sourcePath);
     Context cont = Context();
 
 
     // Compile the input
-    std::cout << "Compiling: " << sourcePath << std::endl;
+    //std::cout << "Compiling: " << sourcePath << std::endl;
     std::cout  << ast->codeprint(cont);
     //printf("Address of x is %p\n", (void *)ast);  
     return 0;

@@ -5,6 +5,7 @@
 
 #include "ast_all.h"
 #include "ast_node.h"
+#include "types.hpp"
 
 
 
@@ -34,10 +35,8 @@ public:
 		// ss << "using constant value " << value<< "\n";
 
 	    std::stringstream ss;
-		ss << "li $0, " << value << "\n";
-		ss << "sw  $0, 0($sp)" << "\n";				// store the result to r0 
-		ss << "addiu $sp, $sp, -4\n";			
-		cont.currentStackOffset--;
+		ss << "li a0, " << value << "\n"; // store the result to r0 
+		
 		return ss.str();
 
 	}
@@ -60,12 +59,26 @@ public:
 class BinaryExpression : public Expression { 
 private:
 	Expression* left;
-	std::string op;
+	Operator op;
 	Expression* right;
 	
 public:
-	BinaryExpression(Expression *left_in, const std::string &op_in, Expression *right_in) : 
+	BinaryExpression(Expression *left_in, const Operator op_in, Expression *right_in) : 
 	left(left_in), op(op_in) , right(right_in)
+	{};
+
+	std::string print();
+	std::string cprint();
+	std::string codeprint(Context& cont);
+};
+
+class UnaryExpression : public Expression {
+private:
+	Operator op;
+	Expression* expr;
+	
+public:
+	UnaryExpression(const Operator op_in, Expression *expr_in) :  op(op_in) , expr(expr_in)
 	{};
 
 	std::string print();

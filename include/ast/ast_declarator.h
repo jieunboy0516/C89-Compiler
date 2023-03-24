@@ -27,7 +27,7 @@ private:
 	DataType type;
 	std::string id;
 	Expression *e;
-	Expression* size;
+	Expression *size;
 
 public:
 	explicit ArrayDeclarator(DataType type_in, std::string id_in, Expression *e_in, Expression* size_in) : Declarator(type_in,id_in,e_in), size(size_in){};

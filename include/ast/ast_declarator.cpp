@@ -12,13 +12,23 @@ std::string Declarator::cprint() {
 	return ss.str();
 }
 std::string Declarator::codeprint(Context& cont) {
-	if(e==NULL) {
-		std::stringstream ss;
-		ss << "addiu $sp, $sp, -4\n";
-		cont.variableMap[id] = cont.currentStackOffset;
-		cont.currentStackOffset++;
-		return ss.str();
-	}
+
+	std::stringstream ss;
+
+	//stack pointer is already pointing to a blank space 
+
+	//evaluate expression if have
+	if(e != NULL) e->codeprint(cont); // result in a0
+	//prepare the stack
+	ss << "addi sp, sp, -4\n";
+
+	//write a0 to the stack and prepare stack for next push
+	Helper::writeNewVar(id,cont);
+
+
+
+	return ss.str();
+	
 }
 
 std::string ArrayDeclarator::print() {

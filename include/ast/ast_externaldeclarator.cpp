@@ -14,16 +14,18 @@ std::string ExternalDeclaration::cprint()
 	
 	return ss.str();
 }
+
 std::string ExternalDeclaration::codeprint(Context &cont)
 {
+	std::stringstream ss;
 	
 	if (d != NULL)
 	{
-		d->codeprint(cont);
+		ss << d->codeprint(cont);
 	}
 	if (f != NULL)
 	{
-		f->codeprint(cont);
-		std::cout << f->codeprint(cont);
+		ss << f->codeprint(cont);
 	}
+	return ss.str();
 }

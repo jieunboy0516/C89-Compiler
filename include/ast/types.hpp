@@ -25,3 +25,16 @@
 //     return os << stringRep[token];
 // }
 #endif
+#ifndef OPERATORS
+#define OPERATORS
+  enum Operator{
+    PLUS,
+    MINUS,
+    TIMES,
+    DIVIDE,
+    MOD,
+    AND,
+    OR,
+    NOT
+  };
+#endif
