@@ -31,7 +31,7 @@ std::string FuncDef::codeprint(Context& cont) {
 		Helper::pushStack(i,cont);
 	}
 
-	int stackoffetbefore = cont.currentStackOffset;
+	//int stackoffetbefore = cont.currentStackOffset;
 
 
 	//enter new scope
