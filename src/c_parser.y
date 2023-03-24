@@ -41,7 +41,7 @@
 %type <StatListPtr> STATEMENT_LIST 
 %type <StatPtr> KW_RETURN
 %type <StatPtr> JUMP_STATEMENT IF_STATEMENT ITERATION_STATEMENT
-%type <ExpPtr> EXPRESSION CONSTANT INITIALIZER TERM FACTOR UNARY 
+%type <ExpPtr> EXPRESSION CONSTANT INITIALIZER TERM FACTOR UNARY ASSIGNMENT_EXPRESSION
 %type <InitListPtr> INITIALIZER_LIST
 %type <datatype> TYPE
 %type <str> IDENTIFIER
@@ -117,6 +117,7 @@ STATEMENT: COMPOUND_STATEMENT {$$ = $1;}
          | JUMP_STATEMENT {$$ = $1; }
          | IF_STATEMENT {$$ = $1;}
          | ITERATION_STATEMENT {$$ = $1;}
+         | ASSIGNMENT_EXPRESSION {$$ = new ExpressionStatement($1);}
         ;
 
 DECLARATION : TYPE IDENTIFIER T_SEMICOLON {$$ = new Declarator($1, *$2, 0);}
@@ -146,6 +147,11 @@ INITIALIZER_LIST: INITIALIZER {$$ = new InitializerList();
                 | INITIALIZER_LIST T_COMMA INITIALIZER {$1->addToList($3);
                                                         $$ = $1;}
                 ;
+
+ASSIGNMENT_EXPRESSION:  IDENTIFIER T_EQUALS EXPRESSION T_SEMICOLON {$$ = new AssignmentExpression(*$1, $3, EQUAL);}
+                      //| IDENTIFIER T_LSQUAREBRACKET EXPRESSION T_RSQUAREBRACKET T_EQUALS EXPRESSION T_SEMICOLON {$$ = new ArrayAssignmentExpression($1, $3, $6, EQUAL);}
+                      | IDENTIFIER T_TIMES T_EQUALS EXPRESSION T_SEMICOLON {$$ = new AssignmentExpression(*$1, $4, TIMES);}
+                      ;
 
 EXPRESSION: TERM                          { $$ = $1; }
           | EXPRESSION T_PLUS EXPRESSION  { $$ = new BinaryExpression($1,PLUS, $3); }
@@ -189,7 +195,8 @@ Node *parseAST(std::string filename)
   }
 
   g_root = NULL;
-  std::cout << yyparse() << std::endl;
+  yyparse();
+  //std::cout << yyparse() << std::endl;
   return g_root;
 }
 

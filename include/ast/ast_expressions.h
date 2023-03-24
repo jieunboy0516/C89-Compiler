@@ -99,4 +99,20 @@ public:
 };
 
 
+class AssignmentExpression : public Expression {
+private:
+	std::string name;
+	Expression* assignmentexpr;
+	Operator op;
+public:
+	AssignmentExpression(std::string name, Expression* assignmentexpr, Operator op_in) :  name(name) , assignmentexpr(assignmentexpr) , op(op_in)
+	{};
+
+	std::string print();
+	std::string cprint();
+	std::string codeprint(Context& cont);
+};
+
+
+
 #endif

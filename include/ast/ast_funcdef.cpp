@@ -19,11 +19,11 @@ std::string FuncDef::codeprint(Context& cont) {
 
 	std::stringstream ss;
 
-	ss << "li fp, " << cont.currentStackOffset << "\n";
+	//ss << "li fp, " << cont.currentStackOffset << "\n";
 	ss << name << ":" << "\n";
 	//funcContext.currentStackOffset = 0;
 	Helper::enterNewScope(cont);
-	ss << "li sp, " << cont.currentStackOffset << "\n";
+	//ss << "li sp, " << cont.currentStackOffset << "\n";
 
 
 	//push all registers onto stack 
@@ -33,14 +33,15 @@ std::string FuncDef::codeprint(Context& cont) {
 
 	int stackoffetbefore = cont.currentStackOffset;
 
+
+	//enter new scope
+	Helper::enterNewScope(cont);
 	//prepare the stack pointer for next push
 	ss << "addi sp, sp, -4\n";
 	cont.currentStackOffset--;
-	ss << cs->codeprint(cont);
 
-	//restoring the stack pointer
-	int bytediff = (cont.currentStackOffset - stackoffetbefore)* 4;	//even the 4 bytes for stack preparation are removed
-	ss << "addi sp, sp, " << bytediff <<"\n";
+	ss << cs->codeprint(cont);
+	//exit new scope in Jumpstatement(return)
 
 	//pop all registers on stack back into the registers 
 	for(int i = 7; i >= 4; i--) {

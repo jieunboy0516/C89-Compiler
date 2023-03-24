@@ -21,6 +21,7 @@ std::string ExternalDeclaration::codeprint(Context &cont)
 	
 	if (d != NULL)
 	{
+
 		ss << d->codeprint(cont);
 	}
 	if (f != NULL)

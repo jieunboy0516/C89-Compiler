@@ -25,8 +25,19 @@ public:
 
 	std::string codeprint(Context& cont) override{
 		std::stringstream ss;
-        //ss << "jumping to: \n";
+
         ss << e->codeprint(cont);	// the expression result in r0
+
+		//restoring the stack pointer
+		ss << Helper::ExitScope(cont);
+		ss << "addi sp, sp, 4\n";	//add back the 4 bytes to SP thats supposed to be prepared for the next push
+
+		
+
+		//int bytediff = (cont.currentStackOffset - stackoffetbefore)* 4;	//even the 4 bytes for stack preparation are removed
+		//ss << "addi sp, sp, " << bytediff <<"\n";
+
+
 		ss << "ret\n";	
 		return ss.str();
 	}
@@ -56,6 +67,17 @@ public:
 	std::string print();
 	std::string cprint();
 	std::string codeprint(Context& cont);
+};
+
+class ExpressionStatement : public Statement {
+	private:
+		Expression* e;
+	public:
+		ExpressionStatement(Expression* e_in) : e(e_in) {};
+
+		std::string print();
+		std::string cprint();
+		std::string codeprint(Context& cont);
 };
 
 #endif

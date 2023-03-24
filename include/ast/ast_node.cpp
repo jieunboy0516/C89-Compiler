@@ -7,6 +7,7 @@
 #include <sstream>
 #include <list>
 #include <map>
+#include <iostream>
 
 #include "ast_node.h"
 
@@ -55,24 +56,24 @@ namespace Helper {
 		ss << "# " << "current stack offset" <<  " = " << currentoffset << "\n";
 		int x = 4*(variableoffset-currentoffset +1); //add 1 because everytime we push something onto the stack, we decrease the currentStackOffset by 1 for the next push
 		ss << "#ReadVar name\n";
-		ss << "ld a" << targetreg<< ", " << x << "(sp)\n";
+		ss << "lw a" << targetreg<< ", " << x << "(sp)\n";
 		return ss.str();
 	}
 
 	std::string writeVar(std::string name, Context& cont) {
 		std::stringstream ss;
-		int a;
+		int variableoffset;
 		for (int i = cont.scopeIndex; i >= 0; i--) {
 			if (cont.variableMaps[i].find(name) != cont.variableMaps[i].end()) {
-				a = cont.variableMaps[i][name];
-				ss << "# " << name <<  " = " << a << "\n";
+				variableoffset = cont.variableMaps[i][name];
+				ss << "# " << name <<  " = " << variableoffset << "\n";
 				break;
 			}
 		}
-		int b = cont.currentStackOffset;
-		int x = 4*(b-a+1);
-		ss << "#WriteVar" << name << "\n";
-		ss << "sw $9, " << x << "($sp)\n";
+		int currentoffset = cont.currentStackOffset;
+		int x = 4*(variableoffset-currentoffset+1);
+		ss << "#WriteVar " << name << "\n";
+		ss << "sw a0, " << x << "(sp)\n";
 		return ss.str();
 	}
 
@@ -105,12 +106,28 @@ namespace Helper {
 
 	//count how many bytes in the current variable map and increase the SP by that amount
 	std::string ExitScope(Context& cont){
-
-		int size = cont.variableMaps.size() +1 ;	//add 1 because ever//add 1 because everytime we push something onto the stack, we decrease the currentStackOffset by 1 for the next pushytime we push something onto the stack, we decrease the currentStackOffset by 1 for the next push
 		std::stringstream ss;
-		ss << "addi sp, sp," << size*4;
+		ss<< "#exiting scope \n"; 
 
+		//get the size of the final variable map
+		std::map <std::string, int> temp = cont.variableMaps[cont.variableMaps.size()-1];
+		
+		//loop through map and print out the key and value
+		for (std::map<std::string, int>::iterator it = temp.begin(); it != temp.end(); ++it) {
+			ss << "#" << it->first << " => " << it->second << '\n';
+		}
+		
+		int size = temp.size();
+		
+		
+		ss << "addi sp, sp," << size*4 << "\n";
+
+		//pop the final variable map
+		cont.variableMaps.pop_back();
 		cont.scopeIndex--;
+
+		ss<< "#done exiting scope \n"; 
+
 		return ss.str();
 	}
 

@@ -65,3 +65,18 @@ std::string WhileStatement::codeprint(Context& cont){
 	}
 	return ss.str();
 }
+
+std::string ExpressionStatement::print(){
+    std::stringstream ss;
+    ss << e->print();
+    return ss.str();
+}
+std::string ExpressionStatement::cprint(){
+    std::stringstream ss;
+    return ss.str();
+}
+std::string ExpressionStatement::codeprint(Context& cont){
+    std::stringstream ss;
+    ss << e->codeprint(cont);
+    return ss.str();
+}

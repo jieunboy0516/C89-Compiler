@@ -153,3 +153,28 @@ std::string UnaryExpression::codeprint(Context &cont) {
 	}
 	return ss.str();
 }
+
+
+
+
+std::string AssignmentExpression::print() {
+	std::stringstream ss;
+
+	return ss.str();
+}
+
+std::string AssignmentExpression::cprint() {
+	std::stringstream ss;
+
+	return ss.str();
+}
+
+std::string AssignmentExpression::codeprint(Context &cont) {
+	std::stringstream ss;
+
+	ss << assignmentexpr->codeprint(cont) << "\n";	//get assignmentexpr into a0
+
+	ss << Helper::writeVar(name,cont);
+
+	return ss.str();
+}

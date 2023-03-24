@@ -35,6 +35,7 @@
     MOD,
     AND,
     OR,
-    NOT
+    NOT,
+    EQUAL
   };
 #endif

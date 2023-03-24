@@ -20,45 +20,62 @@ void compile(std::ostream &w)
 
 int main(int argc, char **argv)
 {
-    // // Parse CLI arguments, to fetch the values of the source and output files.
-    // std::string sourcePath = "";
-    // std::string outputPath = "";
-    // if (parse_command_line_args(argc, argv, sourcePath, outputPath))
-    // {
-    //     return 1;
-    // }
+    bool debugging = false;
 
-    // Node *ast=parseAST(sourcePath);
+    if (!debugging)
+    {
 
-    // // Open the output file in truncation mode (to overwrite the contents)
-    // std::ofstream output;
-    // output.open(outputPath, std::ios::trunc);
-    // Context cont = Context();
+        // Parse CLI arguments, to fetch the values of the source and output files.
+        std::string sourcePath = "";
+        std::string outputPath = "";
+        if (parse_command_line_args(argc, argv, sourcePath, outputPath))
+        {
+            return 1;
+        }
 
-    // // Compile the input
-    // std::cout << "Compiling: " << sourcePath << std::endl;
-    // output << ast->codeprint(cont);
-    // std::cout << "Compiled to: " << outputPath << std::endl;
+        Node *ast = parseAST(sourcePath);
 
-    // output.close();
-    // return 0;
+        // Open the output file in truncation mode (to overwrite the contents)
+        std::ofstream output;
+        output.open(outputPath, std::ios::trunc);
+        Context cont = Context();
 
+        // Compile the input
+        std::cout << "Compiling: " << sourcePath << std::endl;
 
+        output << ".text" << std::endl;
+        output << ".globl f" << std::endl;
+        output << std::endl;
+        output << ast->codeprint(cont);
+        output.close();
+        std::cout << "Compiled to: " << outputPath << std::endl;
+        std::cout << ".text" << std::endl;
+        std::cout << ".globl f" << std::endl;
+        std::cout << std::endl;
+        std::cout << ast->codeprint(cont);
 
-    std::string sourcePath = "./temp.txt";
+        return 0;
+    }
+    else
+    {
 
-    Node *ast=parseAST(sourcePath);
-    Context cont = Context();
+        std::string sourcePath = "./temp.txt";
+        std::string outputPath = "./tempoutput.txt";
 
+        Node *ast=parseAST(sourcePath);
+        Context cont = Context();
+        // Open the output file in truncation mode (to overwrite the contents)
+        std::ofstream output;
+        output.open(outputPath, std::ios::trunc);
 
-    // Compile the input
-    //std::cout << "Compiling: " << sourcePath << std::endl;
-    std::cout  << ast->codeprint(cont);
-    //printf("Address of x is %p\n", (void *)ast);  
-    return 0;
-
-
-
-
-
+        output << ".text" << std::endl;
+        output << ".globl f" << std::endl;
+        output << std::endl;
+        output << ast->codeprint(cont);
+        // Compile the input
+        //std::cout << "Compiling: " << sourcePath << std::endl;
+        std::cout  << ast->codeprint(cont);
+        //printf("Address of x is %p\n", (void *)ast);
+        return 0;
+    }
 }
