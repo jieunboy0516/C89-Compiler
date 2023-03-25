@@ -2,10 +2,51 @@
 .globl f
 
 f:
-addi sp, sp, -4
+#initial stack offset: 0
+#entering scope 1
+addi sp, sp, -4 #new prepared stack offset = -1
+sw  a4, 0(sp)
+addi sp, sp, -4 #new prepared stack offset = -2
+sw  a5, 0(sp)
+addi sp, sp, -4 #new prepared stack offset = -3
+sw  a6, 0(sp)
+addi sp, sp, -4 #new prepared stack offset = -4
+sw  a7, 0(sp)
+addi sp, sp, -4 #new prepared stack offset = -5
+#entering scope 2
+
+#declaring x
+#constant value 5
 li a0, 5
+li t0, 0 #store true to t0 
+#WriteNEWVarx
+sw a0, 0(sp)
+addi sp, sp, -4 #new prepared stack offset = -6
+#finish declaring 
+
+
+#RETURNING 
+#retrieving identifier
+# x = -5
+# current stack offset = -6
+#ReadVar name
+lw a0, 4(sp)
+li t0, 1
+beqz a0, L1
+li t0, 0
+L1:
 #exiting scope 
-addi sp, sp,0
+#x => -5
+addi sp, sp, 4 #new prepared stack offset = -5
 #done exiting scope 
-addi sp, sp, 4
+
+addi sp, sp, +4 #new prepared stack offset = -4
+lw  a7, 0(sp)
+addi sp, sp, +4 #new prepared stack offset = -3
+lw  a6, 0(sp)
+addi sp, sp, +4 #new prepared stack offset = -2
+lw  a5, 0(sp)
+addi sp, sp, +4 #new prepared stack offset = -1
+lw  a4, 0(sp)
+addi sp, sp, 4 #new prepared stack offset = 0
 ret
