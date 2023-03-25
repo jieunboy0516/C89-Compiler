@@ -20,12 +20,14 @@ std::string Identifier::print() {
 std::string Identifier::codeprint(Context& cont){
 	std::stringstream ss;
 
+	ss << "#retrieving identifier\n";
+	
     std::string truthinessCheck = Helper::getUniqueLabel(cont);
 	//read the variable to target a0
 	ss << Helper::readVar(name, cont, 0);
     ss << "li t0, 1\n"; //store tuthieness to t0 default false
     ss << "beqz a0, " << truthinessCheck << "\n"; //Check if a0 is 0 (false) and jump to truthinessCheck if it is
-    ss << "li t0, 0\n"; //Set truthiness to true
+    ss << "li t0, 0\n"; //Set truthiness to true			
     ss << truthinessCheck << ":\n";
 
 	return ss.str();
@@ -129,6 +131,10 @@ Expression* InitializerList::getExpression(int index){
     return elist[index];
 }
 
+int InitializerList::getSize(){
+	return elist.size();
+}
+
 InitializerList::InitializerList(){
 }
 
@@ -215,24 +221,26 @@ std::string ArrayAssignmentExpression::cprint() {
     return ss.str();
 }
 
+
+//change an array element by index
 std::string ArrayAssignmentExpression::codeprint(Context &cont) {
     std::stringstream ss;
 
 
-    int idx = ((ConstantValue*)index)->getValue();
-    ss << assignmentexpr->codeprint(cont) << "\n";	//get assignmentexpr into a0
-    switch(op){
-        case EQUAL:
-            //Write over the variable with the same index
-            ss << Helper::writeVar(name + "[" + std::to_string(idx) + "]",cont);
-            break;
-        case PLUS:
-            ss << "mv a1, a0\n"; //move the assignment value into a1
-            ss << Helper::readVar(name + "[" + std::to_string(idx) + "]",cont,1);
-            ss << "add a0, a0, a1 \n"; //Add into a0
-            ss << Helper::writeVar(name + "[" + std::to_string(idx) + "]",cont);
-            break;
-    }
+    // int idx = ((ConstantValue*)index)->getValue();
+    // ss << assignmentexpr->codeprint(cont) << "\n";	//get assignmentexpr into a0
+    // switch(op){
+    //     case EQUAL:
+    //         //Write over the variable with the same index
+    //         ss << Helper::writeVar(name + "[" + std::to_string(idx) + "]",cont);
+    //         break;
+    //     case PLUS:
+    //         ss << "mv a1, a0\n"; //move the assignment value into a1
+    //         ss << Helper::readVar(name + "[" + std::to_string(idx) + "]",cont,1);
+    //         ss << "add a0, a0, a1 \n"; //Add into a0
+    //         ss << Helper::writeVar(name + "[" + std::to_string(idx) + "]",cont);
+    //         break;
+    // }
     return ss.str();
 }
 
@@ -253,6 +261,7 @@ std::string RelationalExpression::cprint() {
 
 std::string RelationalExpression::codeprint(Context& cont){
     std::stringstream ss;
+	ss << "#starting relation comparison\n";
     ss << "li t0, 1\n"; //Set t0 to 1 for assuming false
     std::string jumpEnd = Helper::getUniqueLabel(cont);
     ss << left->codeprint(cont); //Print the left expression

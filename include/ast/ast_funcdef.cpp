@@ -21,32 +21,37 @@ std::string FuncDef::codeprint(Context& cont) {
 
 	//ss << "li fp, " << cont.currentStackOffset << "\n";
 	ss << name << ":" << "\n";
+	ss << "#initial stack offset: " << cont.currentStackOffset << "\n";
 	//funcContext.currentStackOffset = 0;
-	Helper::enterNewScope(cont);
+	ss << Helper::enterNewScope(cont);
 	//ss << "li sp, " << cont.currentStackOffset << "\n";
 
 
+
+	// //prepare the stack pointer for next push
+	ss << "addi sp, sp, -4 #new prepared stack offset = " << cont.currentStackOffset - 1<< "\n";
+	cont.currentStackOffset--;
 	//push all registers onto stack
 	for(int i = 4; i <= 7; i++) {
 		ss << Helper::pushStack(i,cont);
 	}
 
+
+
 	//int stackoffetbefore = cont.currentStackOffset;
 
 
 	//enter new scope
-	Helper::enterNewScope(cont);
-	//prepare the stack pointer for next push
-	ss << "addi sp, sp, -4\n";
-	cont.currentStackOffset--;
+	ss << Helper::enterNewScope(cont);
+	//prepare the stack pointer for next push (stack is already prepared from the last pushstack)
 
 	ss << cs->codeprint(cont);
 	//exit new scope in Jumpstatement(return)
 
-	//pop all registers on stack back into the registers
-	for(int i = 7; i >= 4; i--) {
-		ss << Helper::popStack(i,cont);
-	}
+	//pop all registers on stack back into the registers (THIS IS DONE IN JUMPSTATEMENT NOW)
+	// for(int i = 7; i >= 4; i--) {
+	// 	ss << Helper::popStack(i,cont);
+	// }
 
 
 

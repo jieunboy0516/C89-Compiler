@@ -36,7 +36,7 @@ namespace Helper {
     std::string getUniqueLabel(Context& cont);
 
 	//create a new variable map for the new scope & increase the scopeindex
-	void enterNewScope(Context& cont);
+	std::string enterNewScope(Context& cont);
 
 	//count how many bytes in the current variable map and increase the SP by that amount
 	std::string ExitScope(Context& cont);

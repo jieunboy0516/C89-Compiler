@@ -27,13 +27,13 @@ namespace Helper {
 	std::string pushStack(int reg, Context& cont) {
 		std::stringstream ss;
 		ss << "sw  a" << reg << ", 0(sp)" << "\n";
-		ss << "addi sp, sp, -4\n";
+		ss << "addi sp, sp, -4 #new prepared stack offset = " << cont.currentStackOffset - 1<< "\n";
 		cont.currentStackOffset--;
 		return ss.str();
 	}
 	std::string popStack(int reg, Context& cont) {
 		std::stringstream ss;
-		ss << "addi sp, sp, +4\n";
+		ss << "addi sp, sp, +4 #new prepared stack offset = " << cont.currentStackOffset + 1<< "\n";
 		ss << "lw  a" << reg << ", 0(sp)" << "\n";
 
 		cont.currentStackOffset++;
@@ -54,7 +54,8 @@ namespace Helper {
 		}
 		int currentoffset = cont.currentStackOffset;
 		ss << "# " << "current stack offset" <<  " = " << currentoffset << "\n";
-		int x = 4*(variableoffset-currentoffset +1); //add 1 because everytime we push something onto the stack, we decrease the currentStackOffset by 1 for the next push
+		//int x = 4*(variableoffset-currentoffset +1); //add 1 because everytime we push something onto the stack, we decrease the currentStackOffset by 1 for the next push
+		int x = 4*(variableoffset-currentoffset);
 		ss << "#ReadVar name\n";
 		ss << "lw a" << targetreg<< ", " << x << "(sp)\n";
 		return ss.str();
@@ -71,7 +72,7 @@ namespace Helper {
 			}
 		}
 		int currentoffset = cont.currentStackOffset;
-		int x = 4*(variableoffset-currentoffset+1);
+		int x = 4*(variableoffset-currentoffset);
 		ss << "#WriteVar " << name << "\n";
 		ss << "sw a0, " << x << "(sp)\n";
 		return ss.str();
@@ -88,7 +89,7 @@ namespace Helper {
 		cont.variableMaps[cont.scopeIndex][name] = cont.currentStackOffset; //changing variable map
 
 		//prepare the stack pointer for next push
-		ss << "addi sp, sp, -4\n";
+		ss << "addi sp, sp, -4 #new prepared stack offset = " << cont.currentStackOffset - 1 << "\n";
 		cont.currentStackOffset--;
 
 
@@ -97,11 +98,17 @@ namespace Helper {
 
 
 	//create a new variable map for the new scope & increase the scopeindex
-	void enterNewScope(Context& cont){
+	std::string enterNewScope(Context& cont){
+		std::stringstream ss;
 
 		std::map<std::string, int> newmap;
 		cont.variableMaps.push_back(newmap);
 		cont.scopeIndex ++;
+
+
+		ss<< "#entering scope " << cont.scopeIndex << "\n";
+
+		return ss.str();
 	}
 
 	//count how many bytes in the current variable map and increase the SP by that amount
@@ -117,16 +124,17 @@ namespace Helper {
 			ss << "#" << it->first << " => " << it->second << '\n';
 		}
 
+		// int size = temp.size() +1;	//+1 because of the extra prepared stack offset
 		int size = temp.size();
 
-
-		ss << "addi sp, sp," << size*4 << "\n";
+		ss << "addi sp, sp, " << size*4 << " #new prepared stack offset = " << cont.currentStackOffset + size << "\n";
+		cont.currentStackOffset += size;
 
 		//pop the final variable map
 		cont.variableMaps.pop_back();
 		cont.scopeIndex--;
 
-		ss<< "#done exiting scope \n";
+		ss<< "#done exiting scope \n\n";
 
 		return ss.str();
 	}

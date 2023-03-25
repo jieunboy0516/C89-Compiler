@@ -15,19 +15,22 @@ std::string Declarator::cprint() {
 std::string Declarator::codeprint(Context& cont) {
 
 	std::stringstream ss;
-	ss << "#declaring " << id << "\n";
+	ss << "\n#declaring " << id << "\n";
 
 	//stack pointer is already pointing to a blank space
 
 	//evaluate expression if have
 	if(e != NULL) ss << e->codeprint(cont); // result in a0
+	
 	//prepare the stack
-	ss << "addi sp, sp, -4\n";
+	// ss << "addi sp, sp, -4 #new prepared stack offset = " << cont.currentStackOffset -1 << "\n";
+	// cont.currentStackOffset--;
+
 
 	//write a0 to the stack and prepare stack for next push
 	ss << Helper::writeNewVar(id,cont);
 
-	ss << "#finish declaring " << "\n";
+	ss << "#finish declaring " << "\n\n";
 
 
 	return ss.str();
@@ -52,14 +55,25 @@ std::string ArrayDeclarator::codeprint(Context& cont) {
     // Run through each variable in teh array and declare it seperately keeping each name unique
     if(size != NULL && e != NULL) {
         for(int i = 0; i < ((ConstantValue*)size)->getValue(); i++){
-            ss << "li a0, " << ((ConstantValue*)e->getExpression(i))->getValue() << "\n";
+
+			ss << "# setting element " << i << " of " << id << "\n";
+
+			//evaluate expression of an element and store in a0
+			ss << ((InitializerList*)e)->getExpression(i)->codeprint(cont) << "\n";
+
+            //ss << "li a0, " << ((ConstantValue*)e->getExpression(i))->getValue() << "\n";
             ss << Helper::writeNewVar(id+"["+std::to_string(i)+"]",cont);
 
         }
     }
-    else if(e != NULL){
-        for(int i = 0; i < e->getSize(); i++){
-            ss << "li a0, " << ((ConstantValue*)e->getExpression(i))->getValue() << "\n";
+    else if(e != NULL){	//if no size is defined
+        for(int i = 0; i < ((InitializerList*)e)->getSize(); i++){
+
+			ss << "# setting element " << i << " of " << id << "\n";
+
+			//evaluate expression of an element and store in a0
+			ss << ((InitializerList*)e)->getExpression(i)->codeprint(cont) << "\n";
+            //ss << "li a0, " << ((ConstantValue*)e->getExpression(i))->getValue() << "\n";
             ss << Helper::writeNewVar(id+"["+std::to_string(i)+"]",cont);
         }
     }

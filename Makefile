@@ -27,5 +27,5 @@ bin/c_lexer.yy.cpp: src/c_lexer.flex
 clean:
 	rm -rf bin/*.o bin/*.cpp bin/*.hpp ./*.o 
 
-# run_program:
-# 	./bin/c_compiler
+run_program:
+	./bin/c_compiler

@@ -17,17 +17,34 @@ std::string JumpStatement::cprint() {
 }
 std::string JumpStatement::codeprint(Context& cont){
 	std::stringstream ss;
+
+	ss << "\n#RETURNING \n" ;
     ss << e->codeprint(cont);	// the expression result in a0
 	//restoring the stack pointer
 	ss << Helper::ExitScope(cont);
-	ss << "addi sp, sp, 4\n";	//add back the 4 bytes to SP thats supposed to be prepared for the next push
+
+	// ss << "addi sp, sp, 4 #new prepared stack offset = " << cont.currentStackOffset + 1<< "\n";	//add back the 4 bytes to SP thats supposed to be prepared for the next push
+	// cont.currentStackOffset += 1;
+
 	//int bytediff = (cont.currentStackOffset - stackoffetbefore)* 4;	//even the 4 bytes for stack preparation are removed
 	//ss << "addi sp, sp, " << bytediff <<"\n";
+
+
+
 
     //pop all registers on stack back into the registers before leaving the function
 	for(int i = 7; i >= 4; i--) {
 		ss << Helper::popStack(i,cont);
 	}
+
+	//restore the stack pointer for the last time
+	ss << "addi sp, sp, 4 #new prepared stack offset = " << cont.currentStackOffset + 1<< "\n";	//add back the 4 bytes to SP thats supposed to be prepared for the next push
+	cont.currentStackOffset += 1;
+
+
+
+
+
 	ss << "ret\n"; //return
 	return ss.str();
 }
